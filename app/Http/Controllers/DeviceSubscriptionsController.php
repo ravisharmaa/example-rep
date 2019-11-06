@@ -39,9 +39,11 @@ class DeviceSubscriptionsController extends Controller
      */
     public function store(Device $device)
     {
-        abort_if(Gate::denies('subscribe-to-device', $device), 403, 'Sorry! We are unable to complete this request.');
+        abort_if(Gate::denies('subscribe-to-device', $device), 403,
+            'Sorry! We are unable to complete this request.');
 
-        abort_if($device->subscriptions()->exists(), 403, 'Sorry ! you are already subscribed to this device.');
+        abort_if($device->subscriptions()->exists(), 403,
+            'Sorry ! you are already subscribed to this device.');
 
         $device->subscribe()->notify();
 
