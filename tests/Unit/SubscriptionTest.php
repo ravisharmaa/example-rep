@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class DeviceSubscriptionTest extends TestCase
+class SubscriptionTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -43,4 +43,6 @@ class DeviceSubscriptionTest extends TestCase
 
         $this->assertNotEquals($subscriptionOne->subscription_id, $subscriptionTwo->subscription_id);
     }
+
+
 }

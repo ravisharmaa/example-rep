@@ -26,15 +26,16 @@ class Device extends Model
 
     /**
      * Creates a new Subscription
+     * @param $user
      * @return $this
      */
 
-    public function subscribe()
+    public function subscribe(?User $user = null)
     {
         $this->subscriptions()->create([
            'requested_at' => now(),
            'subscription_id' => Str::uuid(),
-           'user_id' => auth()->user()->id
+           'user_id' => ($user)? $user->id : auth()->user()->id
         ]);
 
         return $this;

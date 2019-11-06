@@ -3,8 +3,11 @@
 namespace Tests\Feature;
 
 use App\Device;
+use App\Mail\RequestForwarded;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class SubscribeToDeviceTest extends TestCase
@@ -47,7 +50,7 @@ class SubscribeToDeviceTest extends TestCase
     /**
      * @test
      */
-    public function user_may_not_subscribe_others_devices()
+    public function user_may_not_subscribe_un_authorized_devices()
     {
         $this->withExceptionHandling();
 
@@ -65,8 +68,10 @@ class SubscribeToDeviceTest extends TestCase
     /**
      * @test
      */
-    public function device_can_be_subscribed_unless_not_reissued()
+    public function device_can_be_subscribed_once()
     {
+        Event::fake();
+
         $this->withExceptionHandling();
 
         $johnDoe = factory(User::class)->create();
@@ -86,6 +91,4 @@ class SubscribeToDeviceTest extends TestCase
         $this->actingAs($johnDoe)->post(route('subscriptions.store', ['device' => $device]))
             ->assertStatus(403);
     }
-
-
 }
