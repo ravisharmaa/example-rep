@@ -82,7 +82,7 @@ class DeviceTest extends TestCase
 
     /**
      * Event fake does not help with
-     * testing the listeners,this method
+     * testing the listeners, so this
      * tests the actual mail process.
      *
      * @test
