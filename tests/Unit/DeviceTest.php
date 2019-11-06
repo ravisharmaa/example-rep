@@ -3,8 +3,10 @@
 namespace Tests\Unit;
 
 use App\Device;
+use App\DeviceSubscription;
 use App\Events\DeviceWasRequested;
 use App\Mail\RequestForwarded;
+use App\Mail\SubscriptionApproved;
 use App\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -57,7 +59,7 @@ class DeviceTest extends TestCase
     /**
      * @test
      */
-    public function it_notifies_the_concerned_on_subscription()
+    public function it_dispatches_event_on_subscription()
     {
         Event::fake();
 
@@ -71,20 +73,45 @@ class DeviceTest extends TestCase
 
         $device->subscribe($user)->notify();
 
+        $deviceSubscription = DeviceSubscription::first();
+
+        Event::assertDispatched(DeviceWasRequested::class, function ($event) use ($deviceSubscription) {
+            return $event->deviceSubscription->subscription_id === $deviceSubscription->subscription_id;
+        });
+    }
+
+    /**
+     * Event fake does not help with
+     * testing the listeners, so this
+     * tests the actual mail process.
+     *
+     * @test
+     */
+    public function it_notifies_the_concerned_when_asked_for_subscription()
+    {
         Mail::fake();
 
         Mail::assertNothingSent();
 
-        Event::assertDispatched(DeviceWasRequested::class, function ($event) use ($device) {
-           return $event->deviceSubscription->subscription_id === $device->subscriptions()->latest()->first()->subscription_id;
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user);
+
+        $device = factory(Device::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        $device->subscribe($user)->notify();
+
+        $deviceSubscription = DeviceSubscription::first();
+
+        event(new DeviceWasRequested($deviceSubscription));
+
+        Mail::assertSent(RequestForwarded::class, function ($mail) use ($user, $deviceSubscription) {
+            return (int) $mail->deviceSubscription->user_id === $user->id
+                && $mail->hasTo('john@example.com');
         });
 
-        $deviceSubscription = $device->subscriptions()->latest()->first();
-
-        Mail::assertSent(RequestForwarded::class, function ($mail) use ($user) {
-           dd($mail);
-        });
-
+        Mail::assertNotSent(SubscriptionApproved::class);
     }
-
 }
