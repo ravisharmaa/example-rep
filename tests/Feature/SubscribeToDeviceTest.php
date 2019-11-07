@@ -3,6 +3,9 @@
 namespace Tests\Feature;
 
 use App\Device;
+use App\DeviceSubscription;
+use App\Events\DeviceWasRequested;
+use App\Listeners\SendNotificationEmail;
 use App\Mail\RequestForwarded;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -90,5 +93,47 @@ class SubscribeToDeviceTest extends TestCase
 
         $this->actingAs($johnDoe)->post(route('subscriptions.store', ['device' => $device]))
             ->assertStatus(403);
+    }
+
+    /**
+     * @test
+     */
+    public function it_dispatches_event_on_subscription()
+    {
+        Event::fake();
+
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user);
+
+        $device = factory(Device::class)->create([
+            'user_id' => $user->id,
+        ]);
+
+        $device->subscribe($user)->notify();
+
+        $deviceSubscription = DeviceSubscription::first();
+
+        Event::assertDispatched(DeviceWasRequested::class, function ($event) use ($deviceSubscription) {
+            return $event->deviceSubscription->subscription_id === $deviceSubscription->subscription_id;
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function it_notifies_the_concerned_when_asked_for_subscription()
+    {
+        Mail::fake();
+
+        $deviceSubscription = factory(DeviceSubscription::class)->make([
+            'user_id' => 123,
+        ]);
+
+        (new SendNotificationEmail())->handle(new DeviceWasRequested($deviceSubscription));
+
+        Mail::assertSent(RequestForwarded::class, function ($mail) use ($deviceSubscription) {
+            return $mail->deviceSubscription->subscription_id === $deviceSubscription->subscription_id;
+        });
     }
 }
