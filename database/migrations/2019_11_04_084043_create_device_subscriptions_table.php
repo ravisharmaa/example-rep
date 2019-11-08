@@ -18,7 +18,7 @@ class CreateDeviceSubscriptionsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('device_id');
             $table->uuid('subscription_id');
-            $table->timestamp('requested_at');
+            $table->timestamp('requested_at')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->text('approved_by')->nullable();
             $table->timestamps();

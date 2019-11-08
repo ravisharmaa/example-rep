@@ -36,7 +36,7 @@ class SubscriptionTest extends TestCase
      * @test
      */
 
-    public function it_has_an_unique_id()
+    public function it_has_an_unique_subscription_id()
     {
         $subscriptionOne = factory(DeviceSubscription::class)->create();
         $subscriptionTwo = factory(DeviceSubscription::class)->create();
@@ -50,11 +50,27 @@ class SubscriptionTest extends TestCase
     public function it_can_be_completed()
     {
         $deviceSubscription = factory(DeviceSubscription::class)->create();
+
         $this->assertNull($deviceSubscription->approved_at);
 
         $deviceSubscription->complete();
 
         $this->assertNotNull($deviceSubscription->fresh()->approved_at);
+    }
+
+    /**
+     * @test
+     */
+
+    public function it_can_be_revoked()
+    {
+        $deviceSubscription = factory(DeviceSubscription::class)->create();
+
+        $this->assertNotNull($deviceSubscription->requested_at);
+
+        $deviceSubscription->revoke();
+
+        $this->assertNull($deviceSubscription->fresh()->requested_at);
     }
 
 

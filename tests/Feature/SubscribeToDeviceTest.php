@@ -46,11 +46,7 @@ class SubscribeToDeviceTest extends TestCase
 
         $this->actingAs($johnDoe)->post(route('subscriptions.store', ['device' => $deviceRelatedToJohnDoe]));
 
-        $this->assertDatabaseHas('device_subscriptions', [
-          'user_id' => $johnDoe->id,
-          'device_id' => $deviceRelatedToJohnDoe->id,
-          'requested_at' => now(),
-        ]);
+        $this->assertSame(1, $deviceRelatedToJohnDoe->fresh()->subscriptions->count());
     }
 
     /**
@@ -156,7 +152,6 @@ class SubscribeToDeviceTest extends TestCase
      */
     public function it_dispatches_event_for_approval()
     {
-
         Event::fake();
 
         $deviceSubscription = factory(DeviceSubscription::class)->create();
@@ -182,7 +177,7 @@ class SubscribeToDeviceTest extends TestCase
         $deviceSubscription = factory(DeviceSubscription::class)->make([
             'user_id' => 123,
             'approved_at' => now(),
-            'approved_by' => 'johnDoe'
+            'approved_by' => 'johnDoe',
         ]);
 
         (new NotifySubscriber())->handle(new SubscriptionWasGranted($deviceSubscription->device, 'janeDoe'));
@@ -191,4 +186,26 @@ class SubscribeToDeviceTest extends TestCase
             return $mail->device->name === $deviceSubscription->device->name;
         });
     }
+
+    /**
+     * @test
+     */
+    public function authorised_user_can_revoke_subscriptions()
+    {
+        $this->withExceptionHandling();
+
+        $user = factory(User::class)->create();
+
+        $deviceSubscription = factory(DeviceSubscription::class)->create([
+            'user_id' => $user->id
+        ]);
+
+        $this->actingAs($user)->delete(route('subscriptions.destroy', ['deviceSubscription' => $deviceSubscription]));
+
+        $this->assertNull($deviceSubscription->fresh()->requested_at);
+    }
+
+    /**
+     *
+     */
 }

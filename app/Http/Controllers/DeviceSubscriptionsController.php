@@ -92,11 +92,14 @@ class DeviceSubscriptionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param DeviceSubscription $deviceSubscription
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(DeviceSubscription $deviceSubscription)
     {
+        $deviceSubscription->revoke();
+
+        return back();
     }
 }

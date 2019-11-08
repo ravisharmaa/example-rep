@@ -41,4 +41,13 @@ class DeviceSubscription extends Model
 
         return $this;
     }
+
+    public function revoke()
+    {
+        $this->update([
+           'requested_at'=> null
+        ]);
+
+        return $this;
+    }
 }
