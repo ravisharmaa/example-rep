@@ -14,15 +14,18 @@ class SubscriptionApproved extends Mailable
      * @var Device
      */
     public $device;
+    /**
+     * @var string
+     */
     public $approvedBy;
 
     /**
      * Create a new message instance.
      *
      * @param Device $device
-     * @param $approvedBy
+     * @param string $approvedBy
      */
-    public function __construct(Device $device, $approvedBy)
+    public function __construct(Device $device, string $approvedBy)
     {
         $this->device = $device;
         $this->approvedBy = $approvedBy;

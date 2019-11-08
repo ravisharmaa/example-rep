@@ -44,5 +44,18 @@ class SubscriptionTest extends TestCase
         $this->assertNotEquals($subscriptionOne->subscription_id, $subscriptionTwo->subscription_id);
     }
 
+    /**
+     * @test
+     */
+    public function it_can_be_completed()
+    {
+        $deviceSubscription = factory(DeviceSubscription::class)->create();
+        $this->assertNull($deviceSubscription->approved_at);
+
+        $deviceSubscription->complete();
+
+        $this->assertNotNull($deviceSubscription->fresh()->approved_at);
+    }
+
 
 }

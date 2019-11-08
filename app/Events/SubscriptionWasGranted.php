@@ -15,13 +15,17 @@ class SubscriptionWasGranted
      * @var Device
      */
     public $device;
+
+    /**
+     * @var string
+     */
     public $approvedBy;
 
     /**
      * Create a new event instance.
      *
      * @param Device $device
-     * @param $approvedBy string
+     * @param string $approvedBy
      */
     public function __construct(Device $device, $approvedBy)
     {

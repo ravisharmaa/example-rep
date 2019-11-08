@@ -26,7 +26,7 @@ class Device extends Model
 
     /**
      * Creates a new Subscription
-     * @param $user
+     * @param User $user
      * @return $this
      */
 

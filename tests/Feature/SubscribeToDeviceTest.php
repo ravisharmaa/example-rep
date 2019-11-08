@@ -136,4 +136,15 @@ class SubscribeToDeviceTest extends TestCase
             return $mail->deviceSubscription->subscription_id === $deviceSubscription->subscription_id;
         });
     }
+
+    /**
+     * @test
+     */
+    public function guests_can_grant_the_subscription()
+    {
+        $this->markTestSkipped();
+        $deviceSubscription = factory(DeviceSubscription::class)->create();
+
+        $this->get(route(''));
+    }
 }

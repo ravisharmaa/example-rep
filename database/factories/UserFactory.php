@@ -52,8 +52,5 @@ $factory->define(DeviceSubscription::class, function (Faker $faker) {
        },
         'subscription_id' => $faker->uuid,
         'requested_at' => now(),
-        'approved_at' => now(),
-        'approved_by'=> $faker->email
-
     ];
 });
