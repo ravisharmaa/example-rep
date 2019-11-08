@@ -5,8 +5,11 @@ namespace Tests\Feature;
 use App\Device;
 use App\DeviceSubscription;
 use App\Events\DeviceWasRequested;
+use App\Events\SubscriptionWasGranted;
+use App\Listeners\NotifySubscriber;
 use App\Listeners\SendNotificationEmail;
 use App\Mail\RequestForwarded;
+use App\Mail\SubscriptionApproved;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -142,9 +145,50 @@ class SubscribeToDeviceTest extends TestCase
      */
     public function guests_can_grant_the_subscription()
     {
-        $this->markTestSkipped();
         $deviceSubscription = factory(DeviceSubscription::class)->create();
 
-        $this->get(route(''));
+        $this->get(route('subscriptions.edit', ['deviceSubscription' => $deviceSubscription]))
+        ->assertSee($deviceSubscription->device->name);
+    }
+
+    /**
+     * @test
+     */
+    public function it_dispatches_event_for_approval()
+    {
+
+        Event::fake();
+
+        $deviceSubscription = factory(DeviceSubscription::class)->create();
+
+        $this->post(route('subscriptions.update', ['deviceSubscription' => $deviceSubscription]), [
+            'approved_by' => 'johnDoe',
+        ]);
+
+        $this->assertSame('johnDoe', $deviceSubscription->fresh()->approved_by);
+
+        Event::assertDispatched(SubscriptionWasGranted::class, function ($event) use ($deviceSubscription) {
+            return $event->device->name === $deviceSubscription->device->name;
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function it_notifies_the_concerned_for_approval()
+    {
+        Mail::fake();
+
+        $deviceSubscription = factory(DeviceSubscription::class)->make([
+            'user_id' => 123,
+            'approved_at' => now(),
+            'approved_by' => 'johnDoe'
+        ]);
+
+        (new NotifySubscriber())->handle(new SubscriptionWasGranted($deviceSubscription->device, 'janeDoe'));
+
+        Mail::assertSent(SubscriptionApproved::class, function ($mail) use ($deviceSubscription) {
+            return $mail->device->name === $deviceSubscription->device->name;
+        });
     }
 }
