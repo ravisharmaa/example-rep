@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DeviceSubscription extends Model
 {
@@ -19,13 +20,13 @@ class DeviceSubscription extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function device()
+    public function device(): BelongsTo
     {
         return $this->belongsTo(Device::class);
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function user()
     {
@@ -36,7 +37,7 @@ class DeviceSubscription extends Model
     {
         $this->update([
             'approved_at' => now(),
-            'approved_by' => request('approved_by')
+            'approved_by' => request('approved_by'),
         ]);
 
         return $this;
@@ -45,7 +46,7 @@ class DeviceSubscription extends Model
     public function revoke()
     {
         $this->update([
-           'requested_at'=> null
+           'requested_at' => null,
         ]);
 
         return $this;

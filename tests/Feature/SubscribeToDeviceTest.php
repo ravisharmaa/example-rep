@@ -204,8 +204,4 @@ class SubscribeToDeviceTest extends TestCase
 
         $this->assertNull($deviceSubscription->fresh()->requested_at);
     }
-
-    /**
-     *
-     */
 }
