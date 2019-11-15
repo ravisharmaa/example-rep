@@ -58,7 +58,7 @@ class SubscribeToDeviceTest extends TestCase
 
         $johnDoe = factory(User::class)->create();
 
-        $deviceRelatedToJohnDoe = factory(Device::class)->create(['user_id' => $johnDoe->id]);
+        factory(Device::class)->create(['user_id' => $johnDoe->id]);
 
         $deviceNotRelatedToJohnDoe = factory(Device::class)->create();
 
