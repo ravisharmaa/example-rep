@@ -2,9 +2,10 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Events\DeviceWasRequested;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -40,5 +41,31 @@ class User extends Authenticatable
     public function devices()
     {
         return $this->hasMany(Device::class);
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function subscribe()
+    {
+        $this->subscriptions()->create([
+           'item_id' => request('item_id'),
+           'subscription_code' => Str::uuid(),
+           'item_name' => request('item_name')
+        ]);
+
+        return $this;
+    }
+
+    public function notify()
+    {
+        event(new DeviceWasRequested($this->subscriptions()->latest()->first()));
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 }

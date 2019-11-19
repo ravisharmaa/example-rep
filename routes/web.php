@@ -15,6 +15,7 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::post('subscriptions/create', 'SubscriptionsController@store');
 Route::post('subscription/{device}/create', 'DeviceSubscriptionsController@store')->name('subscriptions.store');
 Route::get('subscription/{deviceSubscription}/edit', 'DeviceSubscriptionsController@edit')->name('subscriptions.edit');
 Route::post('subscription/{deviceSubscription}/update', 'DeviceSubscriptionsController@update')->name('subscriptions.update');

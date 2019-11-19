@@ -28,7 +28,7 @@
                             <td>{{result.assigned_date | humanize}}</td>
                             <td>{{result.assignee}}</td>
                             <td>{{result.status | format }}</td>
-                            <td><a class="btn btn-primary btn-sm" href="" @click.prevent="subscribe(result.item_id)">Request</a></td>
+                            <td><a class="btn btn-primary btn-sm" href="" @click.prevent="subscribe(result)">Request</a></td>
                         </tr>
                         </tbody>
                     </table>
@@ -41,7 +41,7 @@
 
     import {user} from "../utilities/auth";
     import moment from 'moment'
-    import {devicesUrl, subscriptionsUrl} from "../utilities/constants";
+    import {devicesUrl, subscriptionsUrl, subscriptionsRemoteUrl} from "../utilities/constants";
 
     export default {
         data() {
@@ -75,14 +75,24 @@
             curated () {
                 return this.results.filter((result) => {
                     return result.item_name.toLowerCase().indexOf(this.curate.toLowerCase()) >= 0;
-                })
+                });
             }
         },
 
         methods:{
-            async subscribe(item) {
-               await axios.post(`${subscriptionsUrl}`, {'item_id':item,'user':user.email()}).then(response => {
-                   console.log(response)
+             async subscribe(result) {
+                 await axios.post(`${subscriptionsUrl}`, {'item_id':result.item_id,'item_name': result.item_name}).then(({data}) => {
+                   /*if (data.status) {
+                       let device = this.results.filter(result => {
+                           return result.item_id === result.item_id;
+                       });
+                       this.results.splice(device,1);
+                       axios.post(`${subscriptionsUrl}`, {'item':result.item_name,'user':user.email()}).then(response => {
+                           console.log(response)
+                       })
+                   }*/
+                    console.log(data)
+
                }).catch(error => {
                    console.log(error)
                })

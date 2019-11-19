@@ -11,6 +11,6 @@ class ViewHomeScreenTest extends TestCase
      */
     public function guests_cannot_view_home_screen()
     {
-        $this->get('/home')->assertRedirect('/login');
+        $this->get('/')->assertRedirect('/login');
     }
 }

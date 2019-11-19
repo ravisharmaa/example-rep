@@ -1967,17 +1967,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     subscribe: function () {
       var _subscribe = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(item) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(result) {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
                 return axios.post("".concat(_utilities_constants__WEBPACK_IMPORTED_MODULE_3__["subscriptionsUrl"]), {
-                  'item_id': item,
-                  'user': _utilities_auth__WEBPACK_IMPORTED_MODULE_1__["user"].email()
-                }).then(function (response) {
-                  console.log(response);
+                  'item_id': result.item_id,
+                  'item_name': result.item_name
+                }).then(function (_ref2) {
+                  var data = _ref2.data;
+
+                  /*if (data.status) {
+                      let device = this.results.filter(result => {
+                          return result.item_id === result.item_id;
+                      });
+                      this.results.splice(device,1);
+                      axios.post(`${subscriptionsUrl}`, {'item':result.item_name,'user':user.email()}).then(response => {
+                          console.log(response)
+                      })
+                  }*/
+                  console.log(data);
                 })["catch"](function (error) {
                   console.log(error);
                 });
@@ -55714,7 +55725,7 @@ var render = function() {
                       on: {
                         click: function($event) {
                           $event.preventDefault()
-                          return _vm.subscribe(result.item_id)
+                          return _vm.subscribe(result)
                         }
                       }
                     },
@@ -68084,10 +68095,12 @@ module.exports = {
 /***/ (function(module, exports) {
 
 var devicesUrl = 'http://10.0.1.8/datasets.php?email=';
-var subscriptionsUrl = 'http://10.0.1.8/subscribe.php';
+var subscriptionsRemoteUrl = 'http://10.0.1.8/subscribe.php';
+var subscriptionsUrl = 'http://localhost:8000/subscriptions/create';
 module.exports = {
   devicesUrl: devicesUrl,
-  subscriptionsUrl: subscriptionsUrl
+  subscriptionsUrl: subscriptionsUrl,
+  subscriptionsRemoteUrl: subscriptionsRemoteUrl
 };
 
 /***/ }),
