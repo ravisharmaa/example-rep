@@ -19,8 +19,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+
         return view('home', [
-            'devices' => auth()->user()->devices,
+            'subscriptions' => auth()->user()->subscriptions,
         ]);
     }
 }

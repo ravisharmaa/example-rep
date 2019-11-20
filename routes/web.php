@@ -11,12 +11,24 @@
 |
 */
 
-
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::post('subscriptions/create', 'SubscriptionsController@store');
+/*
+ * Create Subscriptions from external Api
+ */
+Route::post('subscriptions/create', 'SubscriptionsController@store')->name('items.subscriptions.store');
+Route::get('subscriptions/{subscription}/edit', 'SubscriptionsController@update')->name('items.subscriptions.update');
+
+/*
+ * Create Device Subscription from internal database
+ */
 Route::post('subscription/{device}/create', 'DeviceSubscriptionsController@store')->name('subscriptions.store');
 Route::get('subscription/{deviceSubscription}/edit', 'DeviceSubscriptionsController@edit')->name('subscriptions.edit');
 Route::post('subscription/{deviceSubscription}/update', 'DeviceSubscriptionsController@update')->name('subscriptions.update');
 Route::delete('subscription/{deviceSubscription}/delete', 'DeviceSubscriptionsController@destroy')->name('subscriptions.destroy');
+
+/*
+ * Departments Route
+ */
+Route::post('departments/create', 'DepartmentsController@store')->name('departments.store');

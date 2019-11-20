@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Events\DeviceWasRequested;
+use App\Events\SubscriptionInitiated;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'department_id',
     ];
 
     /**
@@ -48,12 +48,18 @@ class User extends Authenticatable
         return $this->hasMany(Subscription::class);
     }
 
-    public function subscribe()
+    /**
+     * @param null $itemId
+     * @param null $itemName
+     *
+     * @return $this
+     */
+    public function subscribe(?int $itemId = null, ?string $itemName = null)
     {
         $this->subscriptions()->create([
-           'item_id' => request('item_id'),
+           'item_id' => ($itemId) ? $itemId : request('item_id'),
            'subscription_code' => Str::uuid(),
-           'item_name' => request('item_name')
+           'item_name' => ($itemName) ? $itemName : request('item_name'),
         ]);
 
         return $this;
@@ -61,7 +67,7 @@ class User extends Authenticatable
 
     public function notify()
     {
-        event(new DeviceWasRequested($this->subscriptions()->latest()->first()));
+        event(new SubscriptionInitiated($this->subscriptions()->latest()->first()));
     }
 
     public function department()

@@ -3,8 +3,12 @@
 namespace App\Providers;
 
 use App\Events\DeviceWasRequested;
+use App\Events\SubscriptionInitiated;
+use App\Events\SubscriptionProcessed;
 use App\Events\SubscriptionWasGranted;
+use App\Listeners\InformConcerned;
 use App\Listeners\NotifySubscriber;
+use App\Listeners\ProcessSubscription;
 use App\Listeners\SendNotificationEmail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -29,9 +33,20 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         // SubscriptionWasGranted
-
         SubscriptionWasGranted::class => [
             NotifySubscriber::class,
+        ],
+
+        //SubscriptionInitiated
+
+        SubscriptionInitiated::class => [
+            ProcessSubscription::class,
+        ],
+
+        //Process Subscription
+
+        SubscriptionProcessed::class => [
+            InformConcerned::class,
         ],
     ];
 

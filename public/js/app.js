@@ -1907,6 +1907,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['subscriptions'],
   data: function data() {
     return {
       results: [],
@@ -1928,24 +1929,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
       var _this = this;
 
+      var subscribedDevices;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
+              subscribedDevices = [];
+              this.subscriptions.map(function (subscription) {
+                subscribedDevices.push(subscription.item_id);
+              });
+              _context.next = 4;
               return axios.get("".concat(_utilities_constants__WEBPACK_IMPORTED_MODULE_3__["devicesUrl"]).concat(_utilities_auth__WEBPACK_IMPORTED_MODULE_1__["user"].email())).then(function (_ref) {
                 var data = _ref.data;
+                data.results.map(function (device) {
+                  device['isSubscribed'] = false;
+
+                  if (subscribedDevices.indexOf(device.item_id) !== -1) {
+                    device['isSubscribed'] = true;
+                  }
+                });
                 _this.results = data.results;
               })["catch"](function (error) {
                 console.log('Error');
               });
 
-            case 2:
+            case 4:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee);
+      }, _callee, this);
     }));
 
     function mounted() {
@@ -1972,28 +1985,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.next = 2;
+                result.isSubscribed = true;
+                _context2.next = 3;
                 return axios.post("".concat(_utilities_constants__WEBPACK_IMPORTED_MODULE_3__["subscriptionsUrl"]), {
                   'item_id': result.item_id,
                   'item_name': result.item_name
                 }).then(function (_ref2) {
                   var data = _ref2.data;
-
-                  /*if (data.status) {
-                      let device = this.results.filter(result => {
-                          return result.item_id === result.item_id;
-                      });
-                      this.results.splice(device,1);
-                      axios.post(`${subscriptionsUrl}`, {'item':result.item_name,'user':user.email()}).then(response => {
-                          console.log(response)
-                      })
-                  }*/
                   console.log(data);
                 })["catch"](function (error) {
                   console.log(error);
                 });
 
-              case 2:
+              case 3:
               case "end":
                 return _context2.stop();
             }
@@ -55717,20 +55721,24 @@ var render = function() {
                 _c("td", [_vm._v(_vm._s(_vm._f("format")(result.status)))]),
                 _vm._v(" "),
                 _c("td", [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "btn btn-primary btn-sm",
-                      attrs: { href: "" },
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.subscribe(result)
-                        }
-                      }
+                  _c("a", {
+                    staticClass: "btn btn-sm",
+                    class: result.isSubscribed
+                      ? "btn-success disabled"
+                      : "btn-primary",
+                    attrs: { href: "" },
+                    domProps: {
+                      textContent: _vm._s(
+                        result.isSubscribed ? "Subscribed" : "Request"
+                      )
                     },
-                    [_vm._v("Request")]
-                  )
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.subscribe(result)
+                      }
+                    }
+                  })
                 ])
               ])
             }),

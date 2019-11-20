@@ -39,12 +39,12 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('HOD') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Department') }}</label>
 
                             <div class="col-md-6">
-                                <select name="" id="" class="form-control">
-                                    @foreach($hods as $hod)
-
+                                <select name="department_id" id="" class="form-control" required>
+                                    @foreach($departments as $department)
+                                        <option value="{{$department->id}}">{{$department->name}}</option>
                                     @endforeach
                                 </select>
                                 @error('hod')

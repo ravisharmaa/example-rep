@@ -16,10 +16,19 @@ class RegistrationsTest extends TestCase
      */
     public function guest_can_register_himself()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->make();
 
-        $this->post('/login', $user->toArray())->assertRedirect('/');
 
-        $this->assertDatabaseHas('users', $user->toArray());
+        $this->post('/register', [
+            'email' => $user->email,
+            'name' => $user->name,
+            'department_id' => $user->department_id,
+            'password' => $user->password,
+            'password_confirmation' => $user->password
+        ]);
+
+        $this->assertAuthenticated();
+
     }
 }

@@ -34,8 +34,6 @@ class DeviceSubscriptionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Device $device
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Device $device)
@@ -71,8 +69,6 @@ class DeviceSubscriptionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param DeviceSubscription $deviceSubscription
-     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(DeviceSubscription $deviceSubscription)
@@ -82,8 +78,6 @@ class DeviceSubscriptionsController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param DeviceSubscription $deviceSubscription
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
@@ -98,10 +92,6 @@ class DeviceSubscriptionsController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param DeviceSubscription $deviceSubscription
-     *
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(DeviceSubscription $deviceSubscription): RedirectResponse
     {

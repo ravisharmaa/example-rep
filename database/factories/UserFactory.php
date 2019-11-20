@@ -1,6 +1,8 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+
+use App\Department;
 use App\Device;
 use App\DeviceSubscription;
 use App\User;
@@ -22,7 +24,7 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'department_id' => function () {
-            return factory(\App\Department::class)->create()->id;
+            return factory(Department::class)->create()->id;
         },
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
@@ -57,10 +59,20 @@ $factory->define(DeviceSubscription::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(\App\Department::class, function (Faker $faker) {
+$factory->define(Department::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'head'=> $faker->email,
+    ];
+});
+
+$factory->define(\App\Subscription::class, function (Faker $faker) {
+    return [
+        'user_id' => function () {
+            return factory(User::class)->create()->id;
+        },
+        'item_id' => $faker->randomDigit,
+        'item_name'=> $faker->name
     ];
 });
 

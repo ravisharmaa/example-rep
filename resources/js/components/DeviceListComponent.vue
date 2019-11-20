@@ -28,7 +28,7 @@
                             <td>{{result.assigned_date | humanize}}</td>
                             <td>{{result.assignee}}</td>
                             <td>{{result.status | format }}</td>
-                            <td><a class="btn btn-primary btn-sm" href="" @click.prevent="subscribe(result)">Request</a></td>
+                            <td><a class="btn btn-sm" :class="result.isSubscribed ? 'btn-success disabled' : 'btn-primary'"  href="" @click.prevent="subscribe(result)" v-text="result.isSubscribed ? 'Subscribed' : 'Request'"></a></td>
                         </tr>
                         </tbody>
                     </table>
@@ -44,6 +44,8 @@
     import {devicesUrl, subscriptionsUrl, subscriptionsRemoteUrl} from "../utilities/constants";
 
     export default {
+        props: ['subscriptions'],
+
         data() {
             return {
                 results: [],
@@ -64,8 +66,22 @@
         },
 
         async mounted() {
+            let subscribedDevices = [];
+            this.subscriptions.map((subscription) => {
+                subscribedDevices.push(subscription.item_id);
+            });
+
             await axios.get(`${devicesUrl}${user.email()}`).then(({data}) => {
-                this.results = data.results
+                data.results.map((device) => {
+                    device['isSubscribed'] = false;
+                   if (subscribedDevices.indexOf(device.item_id) !== -1) {
+                       device['isSubscribed'] = true;
+                   }
+                });
+
+                this.results = data.results;
+
+
             }).catch(error => {
                 console.log('Error')
             });
@@ -81,17 +97,9 @@
 
         methods:{
              async subscribe(result) {
+                 result.isSubscribed = true;
                  await axios.post(`${subscriptionsUrl}`, {'item_id':result.item_id,'item_name': result.item_name}).then(({data}) => {
-                   /*if (data.status) {
-                       let device = this.results.filter(result => {
-                           return result.item_id === result.item_id;
-                       });
-                       this.results.splice(device,1);
-                       axios.post(`${subscriptionsUrl}`, {'item':result.item_name,'user':user.email()}).then(response => {
-                           console.log(response)
-                       })
-                   }*/
-                    console.log(data)
+                     console.log(data)
 
                }).catch(error => {
                    console.log(error)

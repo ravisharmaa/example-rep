@@ -45,6 +45,11 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
+                        @can('create-department')
+                            <li class="nav-item">
+                                <a class="nav-link" href="">{{ __('Create Department') }}</a>
+                            </li>
+                        @endauth()
                         @guest
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
