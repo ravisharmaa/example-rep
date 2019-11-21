@@ -21,6 +21,8 @@ class CreateSubscriptionsTable extends Migration
             $table->text('subscription_code')->nullable();
             $table->string('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
+            $table->timestamp('requested_at')->nullable();
+            $table->timestamp('returned_at')->nullable();
             $table->timestamps();
         });
     }

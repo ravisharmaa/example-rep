@@ -22,8 +22,8 @@ class Subscription extends Model
     public function approve()
     {
         $this->update([
-           'approved_by' => $this->user->department->head,
-            'approved_at' => now()
+            'approved_by' => $this->user->department->head,
+            'approved_at' => now(),
         ]);
 
         return $this;
@@ -32,5 +32,23 @@ class Subscription extends Model
     public function inform()
     {
         event(new SubscriptionProcessed($this));
+    }
+
+    public function reject()
+    {
+        $this->update([
+           'requested_at' => null,
+        ]);
+
+        return $this;
+    }
+
+    public function revoke()
+    {
+        $this->update([
+           'returned_at' => now(),
+        ]);
+
+        return $this;
     }
 }

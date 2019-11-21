@@ -19,6 +19,12 @@ Route::get('/', 'HomeController@index')->name('home');
  */
 Route::post('subscriptions/create', 'SubscriptionsController@store')->name('items.subscriptions.store');
 Route::get('subscriptions/{subscription}/edit', 'SubscriptionsController@update')->name('items.subscriptions.update');
+Route::post('subscriptions/{subscription}/delete', 'SubscriptionsController@destroy')->name('items.subscriptions.destroy');
+
+/**
+ * RejectSubscriptions
+ */
+Route::get('subscriptions/{subscription}/reject', 'RejectedSubscriptionsController@update')->name('items.subscriptions.reject');
 
 /*
  * Create Device Subscription from internal database

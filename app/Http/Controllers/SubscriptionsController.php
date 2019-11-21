@@ -43,11 +43,11 @@ class SubscriptionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\Response
+     * @param Subscription $subscription
+     * @return void
      */
-    public function destroy($id)
+    public function destroy(Subscription $subscription)
     {
+        return $subscription->revoke();
     }
 }

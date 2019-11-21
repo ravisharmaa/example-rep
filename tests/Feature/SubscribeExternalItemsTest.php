@@ -124,7 +124,6 @@ class SubscribeExternalItemsTest extends TestCase
     {
         $this->withoutExceptionHandling();
         Event::fake();
-        $department = factory(Department::class)->make();
 
         $subscription = factory(Subscription::class)->create([
             'subscription_code' => Str::uuid(),
@@ -146,8 +145,6 @@ class SubscribeExternalItemsTest extends TestCase
 
         Mail::fake();
 
-        $department = factory(Department::class)->make();
-
         $subscription = factory(Subscription::class)->create([
             'subscription_code' => Str::uuid(),
         ]);
@@ -157,5 +154,66 @@ class SubscribeExternalItemsTest extends TestCase
         Mail::assertSent(SubscriptionCompleted::class, function ($mail) use ($subscription) {
             return $mail->hasTo($subscription->user->email);
         });
+    }
+
+    /**
+     * @test
+     */
+    public function department_head_can_reject_subscription()
+    {
+        $this->withoutExceptionHandling();
+
+        $subscription = factory(Subscription::class)->create([
+            'subscription_code' => Str::uuid(),
+            'requested_at' => now(),
+        ]);
+
+        $this->get(route('items.subscriptions.reject', [$subscription]));
+
+        $this->assertNull($subscription->fresh()->requested_at);
+    }
+
+    /**
+     * @test
+     */
+    public function it_dispatches_event_on_rejection()
+    {
+        Event::fake();
+
+        $this->withoutExceptionHandling();
+
+        $subscription = factory(Subscription::class)->create([
+            'subscription_code' => Str::uuid(),
+            'requested_at' => now(),
+        ]);
+
+        $this->get(route('items.subscriptions.reject', [$subscription]));
+
+        Event::assertDispatched(SubscriptionProcessed::class, function ($event) use ($subscription) {
+            return $event->subscription->requested_at = $subscription->requested_at;
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function user_can_return_item()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create();
+
+        $subscription = factory(Subscription::class)->create([
+            'user_id' => $user->id,
+            'subscription_code' => Str::uuid(),
+            'requested_at' => now(),
+            'approved_at' => now(),
+        ]);
+
+        $this->assertNull($subscription->returned_at);
+
+        $this->actingAs($user)->post(route('items.subscriptions.destroy', [$subscription]));
+
+        $this->assertNotNull($subscription->fresh()->returned_at);
     }
 }
