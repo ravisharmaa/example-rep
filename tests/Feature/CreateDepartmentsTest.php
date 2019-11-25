@@ -5,12 +5,10 @@ namespace Tests\Feature;
 use App\Department;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class CreateDepartmentsTest extends TestCase
 {
-
     use RefreshDatabase;
 
     /**
@@ -30,7 +28,7 @@ class CreateDepartmentsTest extends TestCase
         $this->withExceptionHandling();
 
         $user = factory(User::class)->create([
-            'email' => 'satya.maharjan@javra.com'
+            'email' => 'satya.maharjan@javra.com',
         ]);
 
         $department = factory(Department::class)->make();
@@ -42,7 +40,7 @@ class CreateDepartmentsTest extends TestCase
         $this->withExceptionHandling();
 
         $user = factory(User::class)->create([
-            'email' => 'random.user@javra.com'
+            'email' => 'random.user@javra.com',
         ]);
 
         $department = factory(Department::class)->make();
@@ -50,6 +48,5 @@ class CreateDepartmentsTest extends TestCase
         $this->actingAs($user)
             ->postJson(route('departments.store'), $department->toArray())
             ->assertStatus(401);
-
     }
 }

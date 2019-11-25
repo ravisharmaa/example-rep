@@ -162,6 +162,7 @@ class SubscribeExternalItemsTest extends TestCase
     public function department_head_can_reject_subscription()
     {
         $this->withoutExceptionHandling();
+        Event::fake();
 
         $subscription = factory(Subscription::class)->create([
             'subscription_code' => Str::uuid(),
