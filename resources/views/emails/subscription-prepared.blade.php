@@ -9,6 +9,12 @@ To Accept the request please follow the url given.
 Approve
 @endcomponent
 
+@component('mail::button', ['url' => route('items.subscriptions.reject', ['subscription'=> $subscription])])
+
+    Reject
+@endcomponent
+
+
 Thanks,<br>
 {{ config('app.name') }}
 @endcomponent

@@ -27,8 +27,8 @@ class CreateDepartmentsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $user = factory(User::class)->create([
-            'email' => 'satya.maharjan@javra.com',
+        $user = factory(User::class)->make([
+            'email' => 'infra@javra.com',
         ]);
 
         $department = factory(Department::class)->make();
@@ -39,7 +39,7 @@ class CreateDepartmentsTest extends TestCase
 
         $this->withExceptionHandling();
 
-        $user = factory(User::class)->create([
+        $user = factory(User::class)->make([
             'email' => 'random.user@javra.com',
         ]);
 

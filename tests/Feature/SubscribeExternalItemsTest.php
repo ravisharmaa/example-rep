@@ -85,7 +85,7 @@ class SubscribeExternalItemsTest extends TestCase
     {
         Mail::fake();
 
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->make();
 
         $this->actingAs($user);
 
@@ -145,7 +145,7 @@ class SubscribeExternalItemsTest extends TestCase
 
         Mail::fake();
 
-        $subscription = factory(Subscription::class)->create([
+        $subscription = factory(Subscription::class)->make([
             'subscription_code' => Str::uuid(),
         ]);
 
@@ -171,7 +171,7 @@ class SubscribeExternalItemsTest extends TestCase
 
         $this->get(route('items.subscriptions.reject', [$subscription]));
 
-        $this->assertNull($subscription->fresh()->requested_at);
+        $this->assertDatabaseMissing('subscriptions', $subscription->toArray());
     }
 
     /**
@@ -198,6 +198,29 @@ class SubscribeExternalItemsTest extends TestCase
     /**
      * @test
      */
+    public function it_notifies_the_seeker_after_rejection()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create();
+
+        Mail::fake();
+
+        $subscription = factory(Subscription::class)->make([
+            'subscription_code' => Str::uuid(),
+            'requested_at' => null,
+        ]);
+
+        (new InformConcerned())->handle(new SubscriptionProcessed($subscription));
+
+        Mail::assertSent(SubscriptionCompleted::class, function ($mail) use ($subscription, $user) {
+            return $mail->hasTo($subscription->user->email);
+        });
+    }
+
+    /**
+     * @test
+     */
     public function user_can_return_item()
     {
         $this->withoutExceptionHandling();
@@ -216,5 +239,56 @@ class SubscribeExternalItemsTest extends TestCase
         $this->actingAs($user)->post(route('items.subscriptions.destroy', [$subscription]));
 
         $this->assertNotNull($subscription->fresh()->returned_at);
+    }
+
+    /**
+     * @test
+     */
+    public function it_dispatches_event_when_an_item_is_returned()
+    {
+        Event::fake();
+
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create();
+
+        $subscription = factory(Subscription::class)->create([
+            'user_id' => $user->id,
+            'subscription_code' => Str::uuid(),
+            'requested_at' => now(),
+            'approved_at' => now(),
+        ]);
+
+        $this->actingAs($user)->post(route('items.subscriptions.destroy', [$subscription]));
+
+        Event::assertDispatched(SubscriptionInitiated::class, function ($event) use ($subscription) {
+            return $event->subscription->item_name === $subscription->fresh()->item_name;
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function it_notifies_the_authority_when_item_is_returned()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->make();
+
+        $this->actingAs($user);
+
+        Mail::fake();
+
+        $subscription = factory(Subscription::class)->create([
+            'subscription_code' => Str::uuid(),
+            'requested_at' => now(),
+            'returned_at' => now(),
+        ]);
+
+        (new ProcessSubscription())->handle(new SubscriptionInitiated($subscription));
+
+        Mail::assertSent(SubscriptionPrepared::class, function ($mail) use ($subscription, $user) {
+            return $mail->hasTo($mail->user->department->head);
+        });
     }
 }

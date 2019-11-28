@@ -4,20 +4,18 @@ namespace App\Mail;
 
 use App\Subscription;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class SubscriptionCompleted extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public $subscription;
 
     /**
      * Create a new message instance.
-     *
-     * @param Subscription $subscription
      */
     public function __construct(Subscription $subscription)
     {
@@ -31,6 +29,10 @@ class SubscriptionCompleted extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.subscription-completed');
+        if ($this->subscription->approved_at) {
+            return $this->subject('Subscription Approved')->markdown('emails.subscription-completed');
+        }
+
+        return $this->subject('Subscription Rejected')->markdown('emails.subscription-rejected');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\SubscriptionInitiated;
 use App\Events\SubscriptionProcessed;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,6 +20,9 @@ class Subscription extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return $this
+     */
     public function approve()
     {
         $this->update([
@@ -29,20 +33,28 @@ class Subscription extends Model
         return $this;
     }
 
+    /**
+     * Fires event
+     */
     public function inform()
     {
         event(new SubscriptionProcessed($this));
     }
 
+    /**
+     * @return $this
+     * @throws \Exception
+     */
     public function reject()
     {
-        $this->update([
-           'requested_at' => null,
-        ]);
+        $this->delete();
 
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function revoke()
     {
         $this->update([
@@ -51,4 +63,14 @@ class Subscription extends Model
 
         return $this;
     }
+
+    /**
+     * Announce
+     */
+    public function announce()
+    {
+        event(new SubscriptionInitiated($this));
+    }
+
+
 }

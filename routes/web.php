@@ -17,6 +17,7 @@ Route::get('/', 'HomeController@index')->name('home');
 /*
  * Create Subscriptions from external Api
  */
+Route::get('subscriptions', 'SubscriptionsController@index')->name('items.subscriptions.index');
 Route::post('subscriptions/create', 'SubscriptionsController@store')->name('items.subscriptions.store');
 Route::get('subscriptions/{subscription}/edit', 'SubscriptionsController@update')->name('items.subscriptions.update');
 Route::post('subscriptions/{subscription}/delete', 'SubscriptionsController@destroy')->name('items.subscriptions.destroy');

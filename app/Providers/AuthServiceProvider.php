@@ -30,7 +30,12 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('create-department', function () {
-            return auth()->user()->email === 'satya.maharjan@javra.com';
+            return auth()->user()->email === 'infra@javra.com';
         });
+
+        Gate::define('view-subscriptions', function () {
+            return auth()->user()->email === 'infra@javra.com';
+        });
+
     }
 }

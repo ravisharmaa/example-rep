@@ -50,6 +50,11 @@
                                 <a class="nav-link" href="">{{ __('Create Department') }}</a>
                             </li>
                         @endauth()
+                        @can('view-subscriptions')
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{route('items.subscriptions.index')}}">{{ __('View Subscriptions') }}</a>
+                            </li>
+                        @endauth()
                         @guest
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>

@@ -62,6 +62,6 @@ class ExternalSubscriptionTest extends TestCase
 
         $subscription->reject();
 
-        $this->assertNull($subscription->requested_at);
+        $this->assertDatabaseMissing('subscriptions', $subscription->toArray());
     }
 }

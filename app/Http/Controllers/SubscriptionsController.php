@@ -3,13 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Subscription;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class SubscriptionsController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth')->except(['update']);
+    }
+
+    public function index()
+    {
+        abort_if(Gate::denies('view-subscriptions'), 403);
+
+        $subscriptions = Subscription::with('user')->get();
+
+        return view('item-subscriptions.index', compact('subscriptions'));
     }
 
     /**
@@ -36,18 +45,15 @@ class SubscriptionsController extends Controller
     public function update(Subscription $subscription)
     {
         $subscription->approve()->inform();
-
-        //return view('items-subscription.completed');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param Subscription $subscription
      * @return void
      */
     public function destroy(Subscription $subscription)
     {
-        return $subscription->revoke();
+        return $subscription->revoke()->announce();
     }
 }

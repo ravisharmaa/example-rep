@@ -24,8 +24,6 @@ class SubscriptionPrepared extends Mailable
 
     /**
      * Create a new message instance.
-     *
-     * @param Subscription $subscription
      */
     public function __construct(Subscription $subscription)
     {
@@ -40,6 +38,10 @@ class SubscriptionPrepared extends Mailable
      */
     public function build()
     {
+        if ($this->subscription->returned_at) {
+            return $this->subject('Item Returned')->markdown('emails.item-returned');
+        }
+
         return $this->markdown('emails.subscription-prepared');
     }
 }
