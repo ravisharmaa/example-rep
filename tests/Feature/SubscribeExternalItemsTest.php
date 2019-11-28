@@ -69,7 +69,7 @@ class SubscribeExternalItemsTest extends TestCase
 
         $this->actingAs($user);
 
-        $user->subscribe($itemId = 1, $itemCode = 'some-random-code')->notify();
+        $user->subscribe($itemId = 1, $itemCode = 'some-random-code')->announce();
 
         $subscription = Subscription::first();
 

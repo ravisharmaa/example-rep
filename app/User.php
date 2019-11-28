@@ -65,7 +65,7 @@ class User extends Authenticatable
         return $this;
     }
 
-    public function notify()
+    public function announce()
     {
         event(new SubscriptionInitiated($this->subscriptions()->latest()->first()));
     }
