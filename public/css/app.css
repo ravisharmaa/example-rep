@@ -10379,10 +10379,10 @@ svg {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 .loginDiv form .btnLogin.btnForgot {
-  background: #cb5828 !important;
+  background: #ff6f34 !important;
 }
 .loginDiv form .btnLogin.btnForgot:hover, .loginDiv form .btnLogin.btnForgot:focus, .loginDiv form .btnLogin.btnForgot:active {
-  background: #cb5828 !important;
+  background: #ff6f34 !important;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 .loginDiv form a.forgetPassword {
@@ -10523,4 +10523,52 @@ svg {
 
 .navbar-light .navbar-nav .nav-link {
   color: #333;
+}
+
+#icon-check .circle {
+  -webkit-animation-name: check;
+  animation-name: check;
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+  stroke-dashoffset: 1000;
+  stroke-dasharray: 1000;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+}
+
+#icon-check .check {
+  -webkit-animation-name: check;
+  animation-name: check;
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+  stroke-dashoffset: 1000;
+  stroke-dasharray: 1000;
+  -webkit-animation-delay: 1s;
+  animation-delay: 1s;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes check {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes check {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.alert-success {
+  background-color: #4CAF50;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  letter-spacing: 1px;
+  border-radius: 10px;
 }

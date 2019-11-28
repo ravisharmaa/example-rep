@@ -62,31 +62,31 @@ svg {
     color: #fff !important;
     margin-right: 5px;
 
-    &:hover 
+    &:hover
     {
         background-color: #F4774A;
     }
-    
+
 }
 
 &.register
 {
 
-   
+
     color: #333 !important;
     background-color: #eaeaea;
 
-    &:hover 
+    &:hover
     {
         background-color: #F4774A;
         color:#fff !important;
     }
-   
-}
 
 }
 
-// login 
+}
+
+// login
 .loginWrapper
 {
     height: calc(100vh - 140px);
@@ -112,12 +112,12 @@ svg {
     display: flex;
     align-items: center;
 
-    &.forgotHero 
+    &.forgotHero
     {
         background: #ff6f34;
     }
 
-    img 
+    img
     {
         max-width: 100%;
     }
@@ -130,7 +130,7 @@ svg {
 
 }
 
-.loginDiv form 
+.loginDiv form
 {
     width: 45%;
     display: inline-block;
@@ -167,7 +167,7 @@ svg {
     font-size: 16px;
     -webkit-transition: background-color 0.15s ease-in-out;
     transition: background-color 0.15s ease-in-out;
-   
+
 }
 
 
@@ -187,7 +187,7 @@ input.form-control:focus {
 
 
 
-.form-check 
+.form-check
 {
     padding-left: 0;
 }
@@ -196,13 +196,13 @@ input.form-control:focus {
 .form-check-input {
     position: absolute; // take it out of document flow
     opacity: 0; // hide it
-  
+
     & + label {
       position: relative;
       cursor: pointer;
       padding: 0;
     }
-  
+
     // Box.
     & + label:before {
       content: '';
@@ -215,14 +215,14 @@ input.form-control:focus {
       border-radius:2px;
 
     }
-  
+
     // Box hover
     &:hover + label:before {
       background: #f35429;
     }
-    
+
     // Box focus
-  
+
     // Box checked
     &:checked + label:before {
       background: #f35429;
@@ -235,7 +235,7 @@ input.form-control:focus {
         background: white;
         width: 2px;
         height: 2px;
-        box-shadow: 
+        box-shadow:
           2px 0 0 white,
           4px 0 0 white,
           4px -2px 0 white,
@@ -244,7 +244,7 @@ input.form-control:focus {
           4px -8px 0 white;
         transform: rotate(45deg);
       }
-    
+
   }
 
   .btnLogin
@@ -264,7 +264,7 @@ input.form-control:focus {
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
 
-    &.btnRegister 
+    &.btnRegister
     {
 
         background: #783b5e;
@@ -278,11 +278,11 @@ input.form-control:focus {
 
     &.btnForgot
     {
-        background: #cb5828 !important;
+        background: #ff6f34 !important;
 
     &:hover, &:focus , &:active
     {
-        background: #cb5828 !important;
+        background: #ff6f34 !important;
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
     }
@@ -294,7 +294,7 @@ a.forgetPassword
     color: #0b3bca;
     font-weight: 500;
     letter-spacing: 1px;
- 
+
     display: block;
   }
 
@@ -303,12 +303,12 @@ a.forgetPassword
 .registerDiv
 {
     form{
-            
+
         input.form-control:focus {
-           
+
             background-color: #ffead1;
-           
-         
+
+
          }
         }
 }
@@ -316,7 +316,7 @@ a.forgetPassword
 
 .deviceList
 {
-    .container-fluid 
+    .container-fluid
     {
         padding-left: 40px;
         padding-right: 40px;
@@ -327,7 +327,7 @@ a.forgetPassword
      background-color: transparent;
      border:none;
 
-     .card-header 
+     .card-header
      {
         border-bottom: none;
     padding: 0;
@@ -346,23 +346,23 @@ align-items: center;
     }
      }
 
-     table 
+     table
      {
-        border-collapse:separate; 
-                border-spacing:0 8px; 
+        border-collapse:separate;
+                border-spacing:0 8px;
 
-         tr 
+         tr
          {
             box-shadow: 0 0 0 1px rgba(230, 230, 230, 0.5);
             transition: transform .1s;
 
-            &:hover 
+            &:hover
             {
                 transform: scale(1.02);
                 background-color: #2756B7 !important;
                 box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
-                td 
+                td
                 {
                     background: #2756B7;
                     color:#fff;
@@ -390,14 +390,14 @@ align-items: center;
 
                 }
             }
-          
 
-             th,td 
+
+             th,td
              {
                  background: #fff;
                  border:none;
                  vertical-align: middle;
-               
+
 
                  &:first-child
                  {
@@ -432,10 +432,10 @@ align-items: center;
 
              }
 
-           
+
          }
 
-         thead 
+         thead
          {
             tr{
                 box-shadow: none;
@@ -444,7 +444,7 @@ align-items: center;
                     background: #fff;
                     box-shadow: none;
                 }
-                th 
+                th
                 {
                     background: #e2e2e2;
                     color: #333;
@@ -463,18 +463,18 @@ align-items: center;
 
 .forgotWrapper
 {
-    form 
+    form
     {
         display: flex;
-        
+
         flex-direction: column;
         justify-content: center;
 
 
        input.form-control:focus {
-            
+
             background-color: #fbddd1;
-          
+
         }
     }
 }
@@ -492,10 +492,50 @@ align-items: center;
 .navbar-light .navbar-nav .nav-link {
     color: #333;
 }
-// .deviceSearch
-// {
-//     input 
-//     {
-//         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-//     }
-// }
+
+#icon-check .circle {
+    -webkit-animation-name: check;
+    animation-name: check;
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+    stroke-dashoffset: 1000;
+    stroke-dasharray: 1000;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+}
+
+#icon-check .check {
+    -webkit-animation-name: check;
+    animation-name: check;
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+    stroke-dashoffset: 1000;
+    stroke-dasharray: 1000;
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes check {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+
+
+.alert-success
+{
+    background-color: #4CAF50;
+    border:none;
+    color:#fff;
+    font-size: 18px;
+    letter-spacing: 1px;
+    border-radius: 10px;
+
+}
