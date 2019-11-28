@@ -1,10 +1,15 @@
 <template>
-        <div class="page-wrapper">
+        <div class="page-wrapper deviceList">
+
+<div class="container-fluid">
+
             <div class="card">
                 <div class="card-header">
+<div class="userName">
                     Devices Assigned to : {{name}}
-                    <div class="float-right">
-                        <input type="text" v-model="curate" placeholder="Search">
+</div>
+                    <div class="deviceSearch">
+                        <input type="text" class="form-control" v-model="curate" placeholder="Search">
                     </div>
                 </div>
                 <div>
@@ -28,11 +33,16 @@
                             <td>{{result.assigned_date | humanize}}</td>
                             <td>{{result.assignee}}</td>
                             <td>{{result.status | format }}</td>
-                            <td><a class="btn btn-sm" :class="result.isSubscribed ? 'btn-success disabled' : 'btn-primary'"  href="" @click.prevent="subscribe(result)" v-text="result.isSubscribed ? 'Subscribed' : 'Request'"></a></td>
+                            <td><a class="btn btnPrimary" :class="result.isSubscribed ? 'btn-success disabled' : 'btn-primary'"  href="" @click.prevent="subscribe(result)" v-text="result.isSubscribed ? 'Subscribed' : 'Request'"></a>
+                            
+                            <a class="btn btnSecondary" :class="result.isSubscribed ? 'btn-success disabled' : 'btn-primary'"  href="" @click.prevent="subscribe(result)" v-text="result.isSubscribed ? 'Subscribed' : 'Return'"></a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
+            </div>
+
             </div>
         </div>
 </template>

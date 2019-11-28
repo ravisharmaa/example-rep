@@ -1903,6 +1903,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -55664,86 +55674,111 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "page-wrapper" }, [
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _vm._v(
-          "\n            Devices Assigned to : " +
-            _vm._s(_vm.name) +
-            "\n            "
-        ),
-        _c("div", { staticClass: "float-right" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.curate,
-                expression: "curate"
-              }
-            ],
-            attrs: { type: "text", placeholder: "Search" },
-            domProps: { value: _vm.curate },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.curate = $event.target.value
-              }
-            }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", [
-        _c("table", { staticClass: "table table-hover" }, [
-          _vm._m(0),
+  return _c("div", { staticClass: "page-wrapper deviceList" }, [
+    _c("div", { staticClass: "container-fluid" }, [
+      _c("div", { staticClass: "card" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _c("div", { staticClass: "userName" }, [
+            _vm._v(
+              "\n                    Devices Assigned to : " +
+                _vm._s(_vm.name) +
+                "\n"
+            )
+          ]),
           _vm._v(" "),
-          _c(
-            "tbody",
-            _vm._l(_vm.curated, function(result, key) {
-              return _c("tr", [
-                _c("td", { attrs: { scope: "row" } }, [
-                  _vm._v(_vm._s(key + 1 + "."))
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(result.item_name))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(result.item_serial))]),
-                _vm._v(" "),
-                _c("td", [
-                  _vm._v(_vm._s(_vm._f("humanize")(result.assigned_date)))
-                ]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(result.assignee))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm._f("format")(result.status)))]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("a", {
-                    staticClass: "btn btn-sm",
-                    class: result.isSubscribed
-                      ? "btn-success disabled"
-                      : "btn-primary",
-                    attrs: { href: "" },
-                    domProps: {
-                      textContent: _vm._s(
-                        result.isSubscribed ? "Subscribed" : "Request"
-                      )
-                    },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.subscribe(result)
+          _c("div", { staticClass: "deviceSearch" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.curate,
+                  expression: "curate"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: "Search" },
+              domProps: { value: _vm.curate },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.curate = $event.target.value
+                }
+              }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", [
+          _c("table", { staticClass: "table table-hover" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.curated, function(result, key) {
+                return _c("tr", [
+                  _c("td", { attrs: { scope: "row" } }, [
+                    _vm._v(_vm._s(key + 1 + "."))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(result.item_name))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(result.item_serial))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(_vm._s(_vm._f("humanize")(result.assigned_date)))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(result.assignee))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(_vm._f("format")(result.status)))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("a", {
+                      staticClass: "btn btnPrimary",
+                      class: result.isSubscribed
+                        ? "btn-success disabled"
+                        : "btn-primary",
+                      attrs: { href: "" },
+                      domProps: {
+                        textContent: _vm._s(
+                          result.isSubscribed ? "Subscribed" : "Request"
+                        )
+                      },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.subscribe(result)
+                        }
                       }
-                    }
-                  })
+                    }),
+                    _vm._v(" "),
+                    _c("a", {
+                      staticClass: "btn btnSecondary",
+                      class: result.isSubscribed
+                        ? "btn-success disabled"
+                        : "btn-primary",
+                      attrs: { href: "" },
+                      domProps: {
+                        textContent: _vm._s(
+                          result.isSubscribed ? "Subscribed" : "Return"
+                        )
+                      },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.subscribe(result)
+                        }
+                      }
+                    })
+                  ])
                 ])
-              ])
-            }),
-            0
-          )
+              }),
+              0
+            )
+          ])
         ])
       ])
     ])
@@ -68113,6 +68148,17 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./resources/sass/_customStyle.scss":
+/*!******************************************!*\
+  !*** ./resources/sass/_customStyle.scss ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -68125,14 +68171,15 @@ module.exports = {
 /***/ }),
 
 /***/ 0:
-/*!*************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
-  \*************************************************************/
+/*!************************************************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/sass/app.scss ./resources/sass/_customStyle.scss ***!
+  \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/ravib/Experiments/tracker/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/ravib/Experiments/tracker/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! F:\xampp\htdocs\tracker\resources\js\app.js */"./resources/js/app.js");
+__webpack_require__(/*! F:\xampp\htdocs\tracker\resources\sass\app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! F:\xampp\htdocs\tracker\resources\sass\_customStyle.scss */"./resources/sass/_customStyle.scss");
 
 
 /***/ })
