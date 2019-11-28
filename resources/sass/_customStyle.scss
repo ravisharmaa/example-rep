@@ -1,0 +1,501 @@
+@import url('https://fonts.googleapis.com/css?family=Catamaran:400,500,600,700,800,900&display=swap');
+
+body{
+
+    font-family: 'Catamaran', sans-serif;
+    background-color: #F4F4F6;
+}
+
+
+
+.navbar-brand
+{
+    font-weight: 900;
+    letter-spacing: 1px;
+    font-size: 22px;
+}
+
+
+@-webkit-keyframes "location-bounce" {
+	0%,100% {
+		-webkit-transform: translateY(0);
+		transform: translateY(0);
+	}
+	50% {
+		-webkit-transform: translateY(-5px);
+		transform: translateY(-5px);
+	}
+}
+@keyframes "location-bounce" {
+	0%,100% {
+		-webkit-transform: translateY(0);
+		transform: translateY(0);
+	}
+	50% {
+		-webkit-transform: translateY(-5px);
+		transform: translateY(-5px);
+	}
+}
+svg {
+	text-align: center;
+	margin: auto;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+#icon-location {
+	-webkit-animation: location-bounce .5s linear infinite both;
+	animation: location-bounce .5s linear infinite both;
+}
+
+.nav-link{
+    padding: 5px 15px !important;
+    border-radius: 4px;
+    -webkit-transition: background-color 0.15s ease-in-out;
+    transition: background-color 0.15s ease-in-out;
+    font-size: 16px;
+
+&.login
+{
+
+    background-color: #0B3BCA;
+    color: #fff !important;
+    margin-right: 5px;
+
+    &:hover 
+    {
+        background-color: #F4774A;
+    }
+    
+}
+
+&.register
+{
+
+   
+    color: #333 !important;
+    background-color: #eaeaea;
+
+    &:hover 
+    {
+        background-color: #F4774A;
+        color:#fff !important;
+    }
+   
+}
+
+}
+
+// login 
+.loginWrapper
+{
+    height: calc(100vh - 140px);
+    align-items: center;
+}
+.card-body
+{
+    padding: 0;
+    display: flex;
+    border-radius:10px;
+}
+.loginDiv
+{
+    border:none;
+}
+.loginDiv .loginHero
+{
+    width: 55%;
+    background: #132760;
+    padding: 60px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    display: flex;
+    align-items: center;
+
+    &.forgotHero 
+    {
+        background: #ff6f34;
+    }
+
+    img 
+    {
+        max-width: 100%;
+    }
+
+    &.registerHero
+    {
+
+        background: #fbe4c9;
+    }
+
+}
+
+.loginDiv form 
+{
+    width: 45%;
+    display: inline-block;
+    float: right;
+    padding: 40px;
+
+
+
+.card-header
+{
+    background: transparent;
+    border-bottom: none;
+    padding: 0;
+    font-size: 50px;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+
+.col-form-label {
+    padding-top: 0;
+    padding-bottom: 10px;
+    margin-bottom: 0;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: 40px;
+    padding: 0.375rem 0.75rem;
+    font-size: 16px;
+    -webkit-transition: background-color 0.15s ease-in-out;
+    transition: background-color 0.15s ease-in-out;
+   
+}
+
+
+input.form-control:focus {
+   border-color:transparent;
+    background-color: #d3deff;
+    color:#333;
+    box-shadow: none;
+
+
+
+
+
+}
+
+
+
+
+
+.form-check 
+{
+    padding-left: 0;
+}
+
+
+.form-check-input {
+    position: absolute; // take it out of document flow
+    opacity: 0; // hide it
+  
+    & + label {
+      position: relative;
+      cursor: pointer;
+      padding: 0;
+    }
+  
+    // Box.
+    & + label:before {
+      content: '';
+      margin-right: 10px;
+      display: inline-block;
+      vertical-align: text-top;
+      width: 20px;
+      height: 20px;
+      background: #e2e2e2;
+      border-radius:2px;
+
+    }
+  
+    // Box hover
+    &:hover + label:before {
+      background: #f35429;
+    }
+    
+    // Box focus
+  
+    // Box checked
+    &:checked + label:before {
+      background: #f35429;
+    }
+    &:checked + label:after {
+        content: '';
+        position: absolute;
+        left: 5px;
+        top: 9px;
+        background: white;
+        width: 2px;
+        height: 2px;
+        box-shadow: 
+          2px 0 0 white,
+          4px 0 0 white,
+          4px -2px 0 white,
+          4px -4px 0 white,
+          4px -6px 0 white,
+          4px -8px 0 white;
+        transform: rotate(45deg);
+      }
+    
+  }
+
+  .btnLogin
+  {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: #0b3bca;
+    border: none;
+
+    &:hover, &:focus , &:active
+    {
+        background: #0b3bca !important;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    &.btnRegister 
+    {
+
+        background: #783b5e;
+
+        &:hover, &:focus , &:active
+        {
+            background: #783b5e !important;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    }
+
+    &.btnForgot
+    {
+        background: #cb5828 !important;
+
+    &:hover, &:focus , &:active
+    {
+        background: #cb5828 !important;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    }
+  }
+a.forgetPassword
+  {
+    padding: 0;
+    margin-top: 15px;
+    color: #0b3bca;
+    font-weight: 500;
+    letter-spacing: 1px;
+ 
+    display: block;
+  }
+
+}
+
+.registerDiv
+{
+    form{
+            
+        input.form-control:focus {
+           
+            background-color: #ffead1;
+           
+         
+         }
+        }
+}
+
+
+.deviceList
+{
+    .container-fluid 
+    {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    .card
+    {
+     background-color: transparent;
+     border:none;
+
+     .card-header 
+     {
+        border-bottom: none;
+    padding: 0;
+    margin-bottom: 20px;
+    background: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .userName
+    {
+font-size: 35px;
+font-weight: 700;
+align-items: center;
+
+    }
+     }
+
+     table 
+     {
+        border-collapse:separate; 
+                border-spacing:0 8px; 
+
+         tr 
+         {
+            box-shadow: 0 0 0 1px rgba(230, 230, 230, 0.5);
+            transition: transform .1s;
+
+            &:hover 
+            {
+                transform: scale(1.02);
+                background-color: #2756B7 !important;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+                td 
+                {
+                    background: #2756B7;
+                    color:#fff;
+                    transform: scale(1.02);
+
+                    .btn
+{
+    border: none;
+    padding: 7px 15px;
+    border-radius: 4px;
+
+    &.btnPrimary
+    {
+        background: #153084;
+
+    }
+
+    &.btnSecondary
+    {
+        background: #e0734b;
+    }
+
+}
+
+
+                }
+            }
+          
+
+             th,td 
+             {
+                 background: #fff;
+                 border:none;
+                 vertical-align: middle;
+               
+
+                 &:first-child
+                 {
+                     border-top-left-radius: 4px;
+                     border-bottom-left-radius: 4px;
+                 }
+                 &:last-child
+                 {
+                     border-top-right-radius: 4px;
+                     border-bottom-right-radius: 4px;
+                     text-align: right;
+                 }
+
+.btn
+{
+    border: none;
+    padding: 7px 15px;
+    border-radius: 4px;
+
+    &.btnPrimary
+    {
+        background: #0B3BCA;
+        margin-right: 10px;
+    }
+
+    &.btnSecondary
+    {
+        background: #F4774A;
+    }
+
+}
+
+             }
+
+           
+         }
+
+         thead 
+         {
+            tr{
+                box-shadow: none;
+                &:hover{
+                    transform: none;
+                    background: #fff;
+                    box-shadow: none;
+                }
+                th 
+                {
+                    background: #e2e2e2;
+                    color: #333;
+                }
+            }
+
+         }
+     }
+    }
+}
+
+.table-hover tbody tr:hover {
+    color: #212529;
+    background-color: rgba(39,86,183, 1) !important;
+}
+
+.forgotWrapper
+{
+    form 
+    {
+        display: flex;
+        
+        flex-direction: column;
+        justify-content: center;
+
+
+       input.form-control:focus {
+            
+            background-color: #fbddd1;
+          
+        }
+    }
+}
+
+.dropdown-item
+{
+
+    &:hover, &:focus , &:active
+    {
+        background-color: #0b3bca;
+        color:#fff;
+    }
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #333;
+}
+// .deviceSearch
+// {
+//     input 
+//     {
+//         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+//     }
+// }
