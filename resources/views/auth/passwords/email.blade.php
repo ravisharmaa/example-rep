@@ -4,15 +4,27 @@
 <div class="container">
     <div class="row justify-content-center loginWrapper forgotWrapper">
         <div class="col-md-12">
+            @if (session('status'))
+                                <div class="alert alert-success" role="alert">
+                                   <span>
+                                 <svg id="icon-check" viewBox="0 0 225 225" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                         xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+                                                         <g transform="matrix(1,0,0,1,-178.667,-170.667)">
+                                                                 <g class="check" transform="matrix(1,0,0,1,176,113)">
+                                                                         <path d="M65,166L101,202L165,138" style="fill:none;stroke:#ffffff;stroke-width:16.67px;" />
+                                                                 </g>
+                                                                 <circle class="circle" cx="291" cy="283" r="104" style="fill:none;stroke:#fff;stroke-width:16.67px;" />
+                                                         </g>
+                                                 </svg>
+                                   </span>
+                                   {{ session('status') }}
+                                </div>
+                            @endif
             <div class="card loginDiv">
-               
+
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+
                     <div class="loginHero forgotHero">
 
 <img src="{{asset('img/forgot.png')}}">
