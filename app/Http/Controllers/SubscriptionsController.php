@@ -14,8 +14,10 @@ class SubscriptionsController extends Controller
 
     public function index()
     {
+        // check the permission
         abort_if(Gate::denies('view-subscriptions'), 403);
 
+        // fetch subscriptions
         $subscriptions = Subscription::with('user')->get();
 
         return view('item-subscriptions.index', compact('subscriptions'));
@@ -26,13 +28,15 @@ class SubscriptionsController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store()
     {
+        // check if  the subscription exists
         abort_if(auth()->user()->subscriptions()->where('item_id', \request('item_id'))->exists(), 401);
 
-        auth()->user()->subscribe()->notify();
+        // announce the notification
+        auth()->user()->subscribe()->announce();
 
         return back();
     }

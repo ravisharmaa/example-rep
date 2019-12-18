@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Device;
 use App\DeviceSubscription;
 use App\Events\SubscriptionWasGranted;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\View\View;
 
 class DeviceSubscriptionsController extends Controller
 {
@@ -18,7 +22,7 @@ class DeviceSubscriptionsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function index()
     {
@@ -34,7 +38,7 @@ class DeviceSubscriptionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Device $device)
     {
@@ -60,7 +64,7 @@ class DeviceSubscriptionsController extends Controller
      *
      * @param int $id
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function show($id)
     {
@@ -69,7 +73,7 @@ class DeviceSubscriptionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function edit(DeviceSubscription $deviceSubscription)
     {
@@ -79,7 +83,7 @@ class DeviceSubscriptionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return RedirectResponse|Redirector
      */
     public function update(DeviceSubscription $deviceSubscription)
     {
@@ -92,8 +96,10 @@ class DeviceSubscriptionsController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @return RedirectResponse
      */
-    public function destroy(DeviceSubscription $deviceSubscription): RedirectResponse
+    public function destroy(DeviceSubscription $deviceSubscription)
     {
         $deviceSubscription->revoke();
 

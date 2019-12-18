@@ -49,9 +49,8 @@ class User extends Authenticatable
     }
 
     /**
-     * @param null $itemId
-     * @param null $itemName
-     *
+     * @param int|null $itemId
+     * @param string|null $itemName
      * @return $this
      */
     public function subscribe(?int $itemId = null, ?string $itemName = null)
@@ -65,6 +64,9 @@ class User extends Authenticatable
         return $this;
     }
 
+    /**
+     * Fires event for mail subscription
+     */
     public function announce()
     {
         event(new SubscriptionInitiated($this->subscriptions()->latest()->first()));

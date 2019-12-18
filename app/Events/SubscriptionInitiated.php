@@ -20,6 +20,7 @@ class SubscriptionInitiated
 
     /**
      * Create a new event instance.
+     * @param Subscription $subscription
      */
     public function __construct(Subscription $subscription)
     {
