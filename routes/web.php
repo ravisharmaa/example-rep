@@ -22,7 +22,7 @@ Route::post('subscriptions/create', 'SubscriptionsController@store')->name('item
 Route::get('subscriptions/{subscription}/edit', 'SubscriptionsController@update')->name('items.subscriptions.update');
 Route::post('subscriptions/{subscription}/delete', 'SubscriptionsController@destroy')->name('items.subscriptions.destroy');
 
-/**
+/*
  * RejectSubscriptions
  */
 Route::get('subscriptions/{subscription}/reject', 'RejectedSubscriptionsController@update')->name('items.subscriptions.reject');
@@ -39,3 +39,10 @@ Route::delete('subscription/{deviceSubscription}/delete', 'DeviceSubscriptionsCo
  * Departments Route
  */
 Route::post('departments/create', 'DepartmentsController@store')->name('departments.store');
+
+/*
+ * Attendances
+ */
+
+Route::get('attendances', 'AttendancesController@create')->name('attendances.create');
+Route::post('attendances', 'AttendancesController@store')->name('attendances.create');

@@ -72,8 +72,18 @@ class User extends Authenticatable
         event(new SubscriptionInitiated($this->subscriptions()->latest()->first()));
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function department()
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+
 }

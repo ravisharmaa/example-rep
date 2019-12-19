@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Subscription;
 use App\User;
+use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -48,5 +49,16 @@ class UserTest extends TestCase
         $user->subscribe($itemId = 1, $itemCode = 'some-random-code');
 
         $this->assertSame(1, $user->subscriptions()->count());
+    }
+
+    /**
+     * @test
+     */
+
+    public function it_has_many_attendances()
+    {
+        $user = factory(User::class)->create();
+
+        $this->assertInstanceOf(HasMany::class, $user->attendances());
     }
 }

@@ -24,6 +24,7 @@ window.Vue = require('vue');
 
 Vue.component('device-list-component', require('./components/DeviceListComponent.vue').default);
 Vue.component('subscriptions-list-component', require('./components/SubscriptionsListComponent.vue').default);
+Vue.component('create-attendances-component', require('./components/CreateAttendancesComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -113,11 +113,11 @@ return [
     */
 
     'markdown' => [
-        'theme' => 'custom',
+        'theme' => 'default',
 
         'paths' => [
-            //resource_path('views/vendor/mail'),
-            resource_path('views/tracker/mail'),
+            resource_path('views/vendor/mail'),
+            //resource_path('views/tracker/mail'),
         ],
     ],
 

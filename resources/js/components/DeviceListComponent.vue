@@ -1,13 +1,13 @@
 <template>
-        <div class="page-wrapper deviceList">
+    <div class="page-wrapper deviceList">
 
-<div class="container-fluid">
+        <div class="container-fluid">
 
             <div class="card">
                 <div class="card-header">
-<div class="userName">
-                    Devices Assigned to : {{name}}
-</div>
+                    <div class="userName">
+                        Devices Assigned to : {{name}}
+                    </div>
                     <div class="deviceSearch">
                         <input type="text" class="form-control" v-model="curate" placeholder="Search">
                     </div>
@@ -33,9 +33,16 @@
                             <td>{{result.assigned_date | humanize}}</td>
                             <td>{{result.assignee}}</td>
                             <td>{{result.status | format }}</td>
-                            <td><a class="btn btnPrimary" :class="result.isSubscribed ? 'btn-success disabled' : 'btn-primary'"  href="" @click.prevent="subscribe(result)" v-text="result.isSubscribed ? 'Subscribed' : 'Request'"></a>
-                            
-                            <a class="btn btnSecondary" :class="result.isSubscribed ? 'btn-success disabled' : 'btn-primary'"  href="" @click.prevent="subscribe(result)" v-text="result.isSubscribed ? 'Subscribed' : 'Return'"></a>
+                            <td>
+                                <a class="btn btnPrimary"
+                                   :class="result.isSubscribed ? 'btn-success disabled' : 'btn-primary'"
+                                   @click.prevent="subscribe(result)"
+                                   v-text="result.isSubscribed ? 'Subscribed' : 'Request'"></a>
+
+                                <a class="btn btnSecondary"
+                                   :class="result.isSubscribed ? 'btn-success disabled' : 'btn-primary'" href=""
+                                   @click.prevent="subscribe(result)"
+                                   v-text="result.isSubscribed ? 'Subscribed' : 'Return'"></a>
                             </td>
                         </tr>
                         </tbody>
@@ -43,8 +50,8 @@
                 </div>
             </div>
 
-            </div>
         </div>
+    </div>
 </template>
 
 <script>
@@ -59,14 +66,14 @@
         data() {
             return {
                 results: [],
-                curate:'',
+                curate: '',
                 name: user.name()
             }
         },
 
-        filters:{
-            format: function(value) {
-                return value === "1" ? 'Assigned':'Returned';
+        filters: {
+            format: function (value) {
+                return value === "1" ? 'Assigned' : 'Returned';
             },
 
             humanize: function (value) {
@@ -84,9 +91,9 @@
             await axios.get(`${devicesUrl}${user.email()}`).then(({data}) => {
                 data.results.map((device) => {
                     device['isSubscribed'] = false;
-                   if (subscribedDevices.indexOf(device.item_id) !== -1) {
-                       device['isSubscribed'] = true;
-                   }
+                    if (subscribedDevices.indexOf(device.item_id) !== -1) {
+                        device['isSubscribed'] = true;
+                    }
                 });
 
                 this.results = data.results;
@@ -98,22 +105,25 @@
         },
 
         computed: {
-            curated () {
+            curated() {
                 return this.results.filter((result) => {
                     return result.item_name.toLowerCase().indexOf(this.curate.toLowerCase()) >= 0;
                 });
             }
         },
 
-        methods:{
-             async subscribe(result) {
-                 result.isSubscribed = true;
-                 await axios.post(`${subscriptionsUrl}`, {'item_id':result.item_id,'item_name': result.item_name}).then(({data}) => {
-                     console.log(data)
+        methods: {
+            async subscribe(result) {
+                result.isSubscribed = true;
+                await axios.post(`${subscriptionsUrl}`, {
+                    'item_id': result.item_id,
+                    'item_name': result.item_name
+                }).then(({data}) => {
+                    console.log(data)
 
-               }).catch(error => {
-                   console.log(error)
-               })
+                }).catch(error => {
+                    console.log(error)
+                })
             }
         }
     }

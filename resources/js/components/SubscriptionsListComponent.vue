@@ -41,7 +41,7 @@
 
     import {user} from "../utilities/auth";
     import moment from 'moment'
-    import {devicesUrl, subscriptionsUrl, subscriptionsRemoteUrl} from "../utilities/constants";
+    import {devicesUrl, subscriptionsUrl} from "../utilities/constants";
 
     export default {
         props: ['subscriptions'],
@@ -73,10 +73,7 @@
 
             await axios.get(`${devicesUrl}${user.email()}`).then(({data}) => {
                 data.results.map((device) => {
-                    device['isSubscribed'] = false;
-                   if (subscribedDevices.indexOf(device.item_id) !== -1) {
-                       device['isSubscribed'] = true;
-                   }
+                    device['isSubscribed'] = subscribedDevices.indexOf(device.item_id) !== -1;
                 });
 
                 this.results = data.results;
