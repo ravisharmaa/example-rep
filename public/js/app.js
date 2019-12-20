@@ -1895,6 +1895,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1902,7 +1903,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       formData: {
         email: '',
-        item_name: ''
+        item_name: []
       },
       devices: [],
       error: 'Please provide a valid email',
@@ -56058,8 +56059,8 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.formData.device,
-                          expression: "formData.device"
+                          value: _vm.formData.item_name,
+                          expression: "formData.item_name"
                         }
                       ],
                       staticClass: "form-control col-form-label",
@@ -56077,7 +56078,7 @@ var render = function() {
                             })
                           _vm.$set(
                             _vm.formData,
-                            "device",
+                            "item_name",
                             $event.target.multiple
                               ? $$selectedVal
                               : $$selectedVal[0]

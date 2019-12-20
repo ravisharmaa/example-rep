@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-    <device-list-component :subscriptions="{{$subscriptions}}"></device-list-component>
+    @can('create-department')
+        <daily-records-component></daily-records-component>
+    @else
+        <device-list-component :subscriptions="{{$subscriptions}}"></device-list-component>
+    @endcan
 @endsection

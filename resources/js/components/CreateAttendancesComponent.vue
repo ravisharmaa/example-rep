@@ -19,11 +19,12 @@
                                 <label for="device">Devices:</label>
                                 <select name="device" id="device"
                                         :class="this.error?'is-invalid':'is-valid'"
-                                        v-model="formData.device"
+                                        v-model="formData.item_name"
                                         class="form-control col-form-label">
                                     <option value="" selected disabled>Choose</option>
                                     <option v-for="device in devices" v-text="device.item_name"></option>
                                 </select>
+
                             </div>
 
                             <div class="form-group row">
@@ -40,15 +41,14 @@
 </template>
 
 <script>
-    import {devicesUrl, attendancesUrl} from '../utilities/constants'
-    import swal from 'sweetalert'
-
+    import {devicesUrl, attendancesUrl} from '../utilities/constants';
+    import swal from 'sweetalert';
     export default {
         data() {
             return {
                 formData: {
                     email: '',
-                    item_name: ''
+                    item_name: []
                 },
                 devices: [],
                 error: 'Please provide a valid email',
