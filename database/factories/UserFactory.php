@@ -2,9 +2,11 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Attendance;
 use App\Department;
 use App\Device;
 use App\DeviceSubscription;
+use App\Subscription;
 use App\User;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
@@ -66,13 +68,24 @@ $factory->define(Department::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(\App\Subscription::class, function (Faker $faker) {
+$factory->define(Subscription::class, function (Faker $faker) {
     return [
         'user_id' => function () {
             return factory(User::class)->create()->id;
         },
         'item_id' => $faker->randomDigit,
         'item_name'=> $faker->name
+    ];
+});
+
+$factory->define(Attendance::class, function (Faker $faker) {
+    return [
+        'user_id' => function () {
+            return factory(User::class)->create()->id;
+        },
+        'subscription_id' => function () {
+            return factory(Subscription::class)->create()->id;
+        }
     ];
 });
 

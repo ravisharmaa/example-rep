@@ -46,3 +46,4 @@ Route::post('departments/create', 'DepartmentsController@store')->name('departme
 
 Route::get('attendances', 'AttendancesController@create')->name('attendances.create');
 Route::post('attendances', 'AttendancesController@store')->name('attendances.create');
+Route::patch('attendances', 'AttendancesController@update')->name('attendances.update');

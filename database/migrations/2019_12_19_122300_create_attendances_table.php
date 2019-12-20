@@ -17,6 +17,8 @@ class CreateAttendancesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('subscription_id');
+            $table->timestamp('in_time')->nullable();
+            $table->timestamp('out_time')->nullable();
             $table->timestamps();
         });
     }
