@@ -17,13 +17,13 @@
 
                             <div class="form-group row">
                                 <label for="device">Devices:</label>
-                                <select name="device" id="device"
-                                        :class="this.error?'is-invalid':'is-valid'"
-                                        v-model="formData.item_name"
-                                        class="form-control col-form-label">
-                                    <option value="" selected disabled>Choose</option>
-                                    <option v-for="device in devices" v-text="device.item_name"></option>
-                                </select>
+                                <multiselect v-model="formData.item_name"
+                                             :options="devices"
+                                                :multiple="true"
+                                             :clear-on-select="true"
+                                            >
+
+                                </multiselect>
 
                             </div>
 
@@ -41,8 +41,10 @@
 </template>
 
 <script>
-    import {devicesUrl, attendancesUrl} from '../utilities/constants';
+    import {devicesUrl, attendancesUrl, deviceAttendances} from '../utilities/constants';
     import swal from 'sweetalert';
+    import Multiselect from 'vue-multiselect'
+
     export default {
         data() {
             return {
@@ -53,8 +55,13 @@
                 devices: [],
                 error: 'Please provide a valid email',
                 checkIn: true,
-                attendancesUrl: attendancesUrl
+                attendancesUrl: attendancesUrl,
+                deviceAttendances: deviceAttendances+ '/'
             }
+        },
+
+        components:{
+            Multiselect: Multiselect
         },
 
         watch: {
@@ -72,8 +79,33 @@
 
         methods: {
             getDevices(value) {
+
+                let devicesFromApi = [];
                 axios.get(`${devicesUrl}${value}`).then(({data}) => {
-                    this.devices = data.results;
+                    data.results.map(data => {
+                       devicesFromApi.push(data.item_name);
+                    });
+
+                    axios.get(`${this.deviceAttendances}${value}`).then((response) => {
+                        debugger;
+                        if (response.data.length) {
+                           response.data.map(item => {
+                              let index = devicesFromApi.indexOf(item.item_name);
+                              if (index > -1) {
+                                  devicesFromApi.splice(index,1);
+                                  this.devices = devicesFromApi;
+                              }
+                           });
+                        } else {
+                            this.devices = data.results.map(data => {
+                                return data.item_name
+                            });
+                        }
+
+
+                    });
+
+
                 }).catch(error => {
                     this.error = 'could not find any device related to the user';
                 });
@@ -87,6 +119,17 @@
                 }
 
                 axios[method](this.attendancesUrl, this.formData).then((response) => {
+                    if (response.status === 200) {
+                        swal({
+                            title: response.data,
+                            icon:"success"
+                        });
+
+                        this.formData.email = '';
+                        this.formData.item_name = '';
+                    }
+
+                    window.location.reload();
 
                 }).catch(({response}) => {
                     if (response.status === 403) {
@@ -95,9 +138,22 @@
                             icon:"error"
                         });
 
-                        this.formData.email = '';
                     }
+
+                    if (response.status === 500) {
+                        swal({
+                            title: 'You need to register the device for taking before taking in',
+                            icon:"error"
+                        });
+
+
+                    }
+
+                    this.formData.email = '';
+                    this.formData.item_name = '';
                 });
+
+
             },
 
             reverse() {

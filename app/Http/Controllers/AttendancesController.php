@@ -3,16 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Attendance;
-use App\Subscription;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Contracts\View\Factory;
+use Carbon\Carbon;
 use Illuminate\Http\Response;
-use Illuminate\View\View;
 
 class AttendancesController extends Controller
 {
+    public function index($email)
+    {
+        return Attendance::distinct()->select('item_name')
+            ->where('email', $email)->get();
+    }
+
     /**
-     * @return Factory|View
+     * Shows the form.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -20,40 +25,34 @@ class AttendancesController extends Controller
     }
 
     /**
-     * Stores a new attendance.
+     * Stores the data.
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|Response
      */
     public function store()
     {
-        $subscription = Subscription::where('item_name', request('item_name'))->first();
+        foreach (\request('item_name') as $item) {
+            Attendance::where('item_name', $item)->first()->delete();
+        }
 
-        abort_if(is_null($subscription), 403, 'You are un-authorized complete this. Please ask for subscription');
-
-        $subscription->user->attendances()->create([
-            'subscription_id' => $subscription->id,
-            'in_time' => now(),
-        ]);
-
-        return response('success', 200);
+        return response('You have success fully entered the device', 200);
     }
 
     /**
-     * @return ResponseFactory|Response
+     * Updates the attendances record.
+     *
+     * @return void
      */
     public function update()
     {
-        $subscription = Subscription::where('item_name', request('item_name'))->first();
+        foreach (request('item_name') as $item) {
+            Attendance::create([
+                'item_name' => $item,
+                'email' => \request('email'),
+                'out_time' => Carbon::today()->toDateString(),
+            ]);
+        }
 
-        abort_if(is_null($subscription), 403, 'You are un-authorized complete this.');
-
-        Attendance::with(['user' => function ($query) {
-            $query->where('email', request('email'))->first()
-                ->with(['subscriptions' => function ($query) {
-                    $query->where('item_name', request('item_name'))->first();
-                }]);
-        }])->latest()->first()->update([
-            'out_time' => now(),
-        ]);
-
-        return response('success', 200);
+        return response('You have success fully entered the device', 200);
     }
 }

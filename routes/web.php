@@ -41,9 +41,16 @@ Route::delete('subscription/{deviceSubscription}/delete', 'DeviceSubscriptionsCo
 Route::post('departments/create', 'DepartmentsController@store')->name('departments.store');
 
 /*
- * Attendances
+ * Attendances for Subscriptions
  */
 
+Route::get('subscription/attendances', 'SubscriptionAttendancesController@create')->name('subscriptions.attendances.create');
+Route::post('subscription/attendances', 'SubscriptionAttendancesController@store')->name('subscriptions.attendances.create');
+Route::patch('subscription/attendances', 'SubscriptionAttendancesController@update')->name('subscriptions.attendances.update');
+
+/*
+ *Daily Attendances
+ */
 Route::get('attendances', 'AttendancesController@create')->name('attendances.create');
 Route::post('attendances', 'AttendancesController@store')->name('attendances.create');
 Route::patch('attendances', 'AttendancesController@update')->name('attendances.update');

@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
-use App\Attendance;
+use App\SubscriptionAttendance;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
-class AttendanceTest extends TestCase
+class SubscriptionAttendanceTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -16,9 +16,7 @@ class AttendanceTest extends TestCase
      */
     public function it_has_a_user()
     {
-        $this->markTestSkipped();
-
-        $attendance = factory(Attendance::class)->create();
+        $attendance = factory(SubscriptionAttendance::class)->create();
 
         $this->assertInstanceOf(BelongsTo::class, $attendance->user());
     }

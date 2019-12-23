@@ -15,10 +15,10 @@ class CreateAttendancesTable extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('subscription_id');
-            $table->timestamp('in_time')->nullable();
-            $table->timestamp('out_time')->nullable();
+            $table->string('email');
+            $table->string('item_name');
+            $table->date('out_time')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

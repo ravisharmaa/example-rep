@@ -16,3 +16,6 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('attendances/{email}', 'AttendancesController@index')->name('attendances.index');
+Route::get('user/{email}/subscriptions', 'Api\\UserSubscriptionsController@index')->name('user.subscriptions.index');

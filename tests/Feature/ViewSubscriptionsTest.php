@@ -24,7 +24,7 @@ class ViewSubscriptionsTest extends TestCase
     /**
      * @test
      */
-    public function random_user_cannot_view_subscriptions()
+    public function random_user_cannot_view_all_subscriptions()
     {
         $this->withExceptionHandling();
 
@@ -38,7 +38,7 @@ class ViewSubscriptionsTest extends TestCase
     /**
      * @test
      */
-    public function super_user_can_view_all_previous_subscritpions()
+    public function super_user_can_view_all_previous_subscriptions()
     {
         $this->withoutExceptionHandling();
 
@@ -46,12 +46,32 @@ class ViewSubscriptionsTest extends TestCase
             'email' => 'infra@javra.com',
         ]);
 
-        $subscription = factory(Subscription::class)->create([
+        factory(Subscription::class)->create([
            'requested_at' => now(),
            'approved_at' => now(),
-            'approved_by' => 'random@user.com'
+            'approved_by' => 'random@user.com',
         ]);
 
-        $this->actingAs($user)->get(route('items.subscriptions.index'))->assertStatus(200);
+        $this->actingAs($user)->get(route('items.subscriptions.index'))
+            ->assertStatus(200);
+    }
+
+    /**
+     * @test
+     */
+    public function user_can_view_his_subscriptions()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create();
+
+        factory(Subscription::class, 2)->create([
+            'user_id' => $user->id,
+             'approved_at' => now()
+        ]);
+
+        $response = $this->get(route('user.subscriptions.index', ['email' => $user->email]));
+
+        $this->assertCount(2, $response['subscriptions']);
     }
 }

@@ -2,24 +2,24 @@
 
 namespace Tests\Feature;
 
-use App\Attendance;
 use App\Subscription;
+use App\SubscriptionAttendance;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class CreateAttendancesTest extends TestCase
+class CreateSubscriptionAttendancesTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
      * @test
      */
-    public function guards_can_view_attendances_form()
+    public function guests_can_view_attendances_form()
     {
         $this->withoutExceptionHandling();
 
-        $response = $this->get(route('attendances.create'));
+        $response = $this->get(route('subscriptions.attendances.create'));
 
         $response->assertViewIs('attendances.create');
     }
@@ -33,12 +33,12 @@ class CreateAttendancesTest extends TestCase
 
         $subscription = factory(Subscription::class)->create();
 
-        $this->post(route('attendances.create'), [
+        $this->post(route('subscriptions.attendances.create'), [
             'item_name' => $subscription->item_name,
             'email' => $subscription->user->email,
         ]);
 
-        $this->assertDatabaseHas('attendances', [
+        $this->assertDatabaseHas('subscription_attendances', [
            'subscription_id' => $subscription->id,
            'user_id' => $subscription->user->id,
            'in_time' => now(),
@@ -58,7 +58,7 @@ class CreateAttendancesTest extends TestCase
 
         $subscription = factory(Subscription::class)->make();
 
-        $this->post(route('attendances.create'), [
+        $this->post(route('subscriptions.attendances.create'), [
            'item_name' => $subscription->item_name,
            'email' => $user->email,
         ])->assertStatus(403);
@@ -75,13 +75,13 @@ class CreateAttendancesTest extends TestCase
 
         $subscriptionOfLaptop = factory(Subscription::class)->create();
 
-        factory(Attendance::class)->create([
+        factory(SubscriptionAttendance::class)->create([
             'user_id' => $subscriptionOfMobile->user->id,
             'subscription_id' => $subscriptionOfMobile->id,
             'in_time' => now(),
         ]);
 
-        $this->patch(route('attendances.update'), [
+        $this->patch(route('subscriptions.attendances.update'), [
            'item_name' => $subscriptionOfMobile->item_name,
            'email' => $subscriptionOfMobile->user->email,
         ]);

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Attendance;
+use Carbon\Carbon;
+
 class HomeController extends Controller
 {
     /**
