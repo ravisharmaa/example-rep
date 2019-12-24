@@ -1968,7 +1968,9 @@ __webpack_require__.r(__webpack_exports__);
               response.data.map(function (item) {
                 localDevices.push(item.item_name);
               });
-              _this.devices = underscore__WEBPACK_IMPORTED_MODULE_3___default.a.union(localDevices, devicesFromApi); // this.devices = localDevices.filter(item_name => devicesFromApi.includes(item_name));
+              _this.devices = devicesFromApi.filter(function (value) {
+                return localDevices.indexOf(value === -1);
+              }); // this.devices = localDevices.filter(item_name => devicesFromApi.includes(item_name));
 
               console.log(_this.devices); //debugger;
             } else {

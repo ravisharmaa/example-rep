@@ -114,7 +114,9 @@
                                    localDevices.push(item.item_name);
                                });
 
-                               this.devices = _.union(localDevices,devicesFromApi);
+                             this.devices = devicesFromApi.filter(value => {
+                                  return localDevices.indexOf(value === -1);
+                              });
                               // this.devices = localDevices.filter(item_name => devicesFromApi.includes(item_name));
                                console.log(this.devices);
                                //debugger;
