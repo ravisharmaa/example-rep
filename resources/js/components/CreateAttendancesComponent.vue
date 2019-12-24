@@ -16,6 +16,14 @@
                             </div>
 
                             <div class="form-group row">
+                                <input type="radio" id="one" value="in" v-model="state" @change="getDevices">
+                                <label for="one">In</label>
+                                <br>
+                                <input type="radio" id="two" value="out" v-model="state" @change="getDevices">
+                                <label for="two">Out</label>
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="device">Devices:</label>
                                 <multiselect v-model="formData.item_name"
                                              :options="devices"
@@ -43,7 +51,8 @@
 <script>
     import {devicesUrl, attendancesUrl, deviceAttendances} from '../utilities/constants';
     import swal from 'sweetalert';
-    import Multiselect from 'vue-multiselect'
+    import Multiselect from 'vue-multiselect';
+    import _ from 'underscore';
 
     export default {
         data() {
@@ -56,7 +65,8 @@
                 error: 'Please provide a valid email',
                 checkIn: true,
                 attendancesUrl: attendancesUrl,
-                deviceAttendances: deviceAttendances+ '/'
+                deviceAttendances: deviceAttendances+ '/',
+                state:''
             }
         },
 
@@ -69,7 +79,7 @@
                 let emailRegex = /\S+@\S+\.\S+/;
                 if (emailRegex.test(value)) {
                     this.error = '';
-                    this.getDevices(value)
+                    //this.getDevices(value)
                 } else {
                     this.error = ' is not a valid email';
                     this.devices = []
@@ -78,37 +88,66 @@
         },
 
         methods: {
-            getDevices(value) {
+            getDevices() {
 
-                let devicesFromApi = [];
-                axios.get(`${devicesUrl}${value}`).then(({data}) => {
-                    data.results.map(data => {
-                       devicesFromApi.push(data.item_name);
-                    });
-
-                    axios.get(`${this.deviceAttendances}${value}`).then((response) => {
-                        debugger;
+                //debugger;
+                if (this.state === 'in') {
+                    axios.get(`${this.deviceAttendances}${this.formData.email}`).then((response) => {
                         if (response.data.length) {
-                           response.data.map(item => {
-                              let index = devicesFromApi.indexOf(item.item_name);
-                              if (index > -1) {
-                                  devicesFromApi.splice(index,1);
-                                  this.devices = devicesFromApi;
-                              }
-                           });
-                        } else {
-                            this.devices = data.results.map(data => {
-                                return data.item_name
+                            this.devices = response.data.map(data => {
+                                return data.item_name;
                             });
                         }
+                    });
+                } else {
+                    let devicesFromApi = [];
+                    let localDevices = [];
+                    axios.get(`${devicesUrl}${this.formData.email}`).then(({data}) => {
+                        data.results.map(item => {
+                            devicesFromApi.push(item.item_name);
+                        });
 
+                        axios.get(`${this.deviceAttendances}${this.formData.email}`).then((response) => {
+                           if (response.data.length) {
 
+                               response.data.map(item => {
+                                   localDevices.push(item.item_name);
+                               });
+
+                               this.devices = _.union(localDevices,devicesFromApi);
+                              // this.devices = localDevices.filter(item_name => devicesFromApi.includes(item_name));
+                               console.log(this.devices);
+                               //debugger;
+                           } else {
+                               this.devices = devicesFromApi;
+                           }
+                        });
                     });
 
+                }
+                // let devicesFromApi = [];
+                // axios.get(`${devicesUrl}${value}`).then(({data}) => {
+                //     data.results.map(data => {
+                //        devicesFromApi.push(data.item_name);
+                //     });
+                //
+                //     axios.get(`${this.deviceAttendances}${value}`).then((response) => {
+                //         if (response.data.length) {
+                //             this.devices = _.union(devicesFromApi, response.data.item_name)
+                //         } else {
+                //             this.devices = data.results.map(data => {
+                //                 return data.item_name
+                //             });
+                //         }
+                //
+                //
+                //     });
+                //
+                //
+                // }).catch(error => {
+                //     this.error = 'could not find any device related to the user';
+                // });
 
-                }).catch(error => {
-                    this.error = 'could not find any device related to the user';
-                });
             },
 
             attend() {

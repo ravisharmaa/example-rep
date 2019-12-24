@@ -28,6 +28,7 @@
     "dependencies": {
         "moment": "^2.24.0",
         "sweetalert": "^2.1.2",
+        "underscore": "^1.9.1",
         "vue-multiselect": "^2.1.6"
     }
 }
