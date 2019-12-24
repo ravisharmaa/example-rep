@@ -99,29 +99,26 @@
         methods: {
             getDevices() {
                 if (this.state) {
-                    axios.get(`${this.userSubscriptions}${this.formData.email}/subscriptions`).then((response) => {
-                        if (response.data.length) {
-                            this.devices = response.data.map(data => {
-                                return data.item_name;
+                    axios.get(`${this.userSubscriptions}${this.formData.email}/subscriptions?deleted=1`).then(({data}) => {
+                        if (data.subscriptions.length) {
+                            this.devices = data.subscriptions.map(device => {
+                                return device.item_name;
                             });
+                        } else {
+                            this.devices = [];
                         }
                     });
                 } else {
                     let subscribedDevices = [];
                     let attendedDevices = [];
                     axios.get(`${this.userSubscriptions}${this.formData.email}/subscriptions`).then(({data}) => {
-                        //debugger;
                         data.subscriptions.map(item => {
                             subscribedDevices.push(item.item_name);
                         });
 
-
-
-                        axios.get(`${this.userSubscriptions}${this.formData.email}/subscriptions?deleted=1`).then((response) => {
-
-
-                            if (response.data.length) {
-                               response.data.map(item => {
+                        axios.get(`${this.userSubscriptions}${this.formData.email}/subscriptions?deleted=1`).then(({data}) => {
+                            if (data.subscriptions.length) {
+                               data.subscriptions.map(item => {
                                    attendedDevices.push(item.item_name);
                                });
 
@@ -134,7 +131,6 @@
                            }
                         });
                     });
-
                 }
             },
 

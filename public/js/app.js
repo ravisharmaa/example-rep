@@ -1957,25 +1957,30 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       if (this.state) {
-        axios.get("".concat(this.userSubscriptions).concat(this.formData.email, "/subscriptions")).then(function (response) {
-          if (response.data.length) {
-            _this.devices = response.data.map(function (data) {
-              return data.item_name;
+        axios.get("".concat(this.userSubscriptions).concat(this.formData.email, "/subscriptions?deleted=1")).then(function (_ref) {
+          var data = _ref.data;
+
+          if (data.subscriptions.length) {
+            _this.devices = data.subscriptions.map(function (device) {
+              return device.item_name;
             });
+          } else {
+            _this.devices = [];
           }
         });
       } else {
         var subscribedDevices = [];
         var attendedDevices = [];
-        axios.get("".concat(this.userSubscriptions).concat(this.formData.email, "/subscriptions")).then(function (_ref) {
-          var data = _ref.data;
-          //debugger;
+        axios.get("".concat(this.userSubscriptions).concat(this.formData.email, "/subscriptions")).then(function (_ref2) {
+          var data = _ref2.data;
           data.subscriptions.map(function (item) {
             subscribedDevices.push(item.item_name);
           });
-          axios.get("".concat(_this.userSubscriptions).concat(_this.formData.email, "/subscriptions?deleted=1")).then(function (response) {
-            if (response.data.length) {
-              response.data.map(function (item) {
+          axios.get("".concat(_this.userSubscriptions).concat(_this.formData.email, "/subscriptions?deleted=1")).then(function (_ref3) {
+            var data = _ref3.data;
+
+            if (data.subscriptions.length) {
+              data.subscriptions.map(function (item) {
                 attendedDevices.push(item.item_name);
               });
               _this.devices = subscribedDevices.filter(function (value) {
@@ -2009,8 +2014,8 @@ __webpack_require__.r(__webpack_exports__);
           _this2.state = false;
           _this2.error = false;
         }
-      })["catch"](function (_ref2) {
-        var response = _ref2.response;
+      })["catch"](function (_ref4) {
+        var response = _ref4.response;
 
         if (response.status === 403) {
           sweetalert__WEBPACK_IMPORTED_MODULE_1___default()({
@@ -70057,9 +70062,9 @@ module.exports = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/ravib/Experiments/tracker/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /Users/ravib/Experiments/tracker/resources/sass/app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! /Users/ravib/Experiments/tracker/resources/sass/_customStyle.scss */"./resources/sass/_customStyle.scss");
+__webpack_require__(/*! /Users/ravibastola/Work/tracker/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /Users/ravibastola/Work/tracker/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /Users/ravibastola/Work/tracker/resources/sass/_customStyle.scss */"./resources/sass/_customStyle.scss");
 
 
 /***/ })
