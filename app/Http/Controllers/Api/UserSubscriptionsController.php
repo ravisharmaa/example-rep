@@ -11,24 +11,17 @@ class UserSubscriptionsController extends Controller
 {
     /**
      * @param string $email
+     *
      * @return ResponseFactory|Response
      */
     public function index($email)
     {
-        if (request()->has('deleted')) {
-            $subscriptions = Subscription::whereHas('attendances', function ($query) use ($email) {
-                $query->whereNotNull('out_time');
-            })->whereHas('user', function ($q) use ($email) {
-                $q->whereEmail($email);
-            })->whereNotNull('approved_at')->get();
-        } else {
-            $subscriptions = Subscription::with(['user' => function ($query) use ($email) {
-                return $query->where('email', $email);
-            }])->whereNotNull('approved_at')->get();
-        }
+        $subscriptions = (request()->has('attended')) ?
+            Subscription::attendedSubscriptionsFor($email) :
+            Subscription::approvedSubscriptionsFor($email);
 
         return response([
-            'subscriptions' => $subscriptions,
+            'subscriptions' => $subscriptions->get(),
         ], 200);
     }
 }

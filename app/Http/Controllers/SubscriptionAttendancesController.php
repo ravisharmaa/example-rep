@@ -41,13 +41,11 @@ class SubscriptionAttendancesController extends Controller
 
     /**
      * @return ResponseFactory|Response
+     *
+     * @throws \Exception
      */
     public function update()
     {
-//        $subscription = Subscription::whereIn('item_name', request('item_name'))->get();
-//
-//        abort_if(is_null($subscription), 403, 'You are un-authorized complete this.');
-
         SubscriptionAttendance::with(['user' => function ($query) {
             $query->where('email', request('email'))->first()
                 ->with(['subscriptions' => function ($query) {

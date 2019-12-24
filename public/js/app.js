@@ -1957,7 +1957,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       if (this.state) {
-        axios.get("".concat(this.userSubscriptions).concat(this.formData.email, "/subscriptions?deleted=1")).then(function (_ref) {
+        axios.get("".concat(this.userSubscriptions).concat(this.formData.email, "/subscriptions?attended=1")).then(function (_ref) {
           var data = _ref.data;
 
           if (data.subscriptions.length) {
@@ -1976,7 +1976,7 @@ __webpack_require__.r(__webpack_exports__);
           data.subscriptions.map(function (item) {
             subscribedDevices.push(item.item_name);
           });
-          axios.get("".concat(_this.userSubscriptions).concat(_this.formData.email, "/subscriptions?deleted=1")).then(function (_ref3) {
+          axios.get("".concat(_this.userSubscriptions).concat(_this.formData.email, "/subscriptions?attended=1")).then(function (_ref3) {
             var data = _ref3.data;
 
             if (data.subscriptions.length) {

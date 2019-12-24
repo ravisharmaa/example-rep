@@ -5,6 +5,8 @@ namespace App;
 use App\Events\SubscriptionInitiated;
 use App\Events\SubscriptionProcessed;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Subscription extends Model
 {
@@ -15,9 +17,24 @@ class Subscription extends Model
         return 'subscription_code';
     }
 
+    /**
+     * Relation.
+     *
+     * @return BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relation.
+     *
+     * @return HasMany
+     */
+    public function attendances()
+    {
+        return $this->hasMany(SubscriptionAttendance::class);
     }
 
     /**
@@ -34,7 +51,9 @@ class Subscription extends Model
     }
 
     /**
-     * Fires event
+     * Inform the subscription for approval.
+     *
+     * Fires event.
      */
     public function inform()
     {
@@ -43,6 +62,7 @@ class Subscription extends Model
 
     /**
      * @return $this
+     *
      * @throws \Exception
      */
     public function reject()
@@ -53,6 +73,8 @@ class Subscription extends Model
     }
 
     /**
+     * Revokes the subscription.
+     *
      * @return $this
      */
     public function revoke()
@@ -65,7 +87,7 @@ class Subscription extends Model
     }
 
     /**
-     * Announce
+     * Announces that the subscription was initiated.
      */
     public function announce()
     {
@@ -73,13 +95,32 @@ class Subscription extends Model
     }
 
     /**
+     * Fetches approved subscriptions for a user.
+     *
+     * @param $query
+     * @param $email
+     *
+     * @return mixed
+     */
+    public function scopeApprovedSubscriptionsFor($query, $email)
+    {
+        return $query->with(['user' => function ($query) use ($email) {
+            return $query->where('email', $email);
+        }])->whereNotNull('approved_at');
+    }
+
+    /*
+     * Fetches attendances having out time
+     * along with subscriptions
      *
      */
 
-    public function attendances()
+    public function scopeAttendedSubscriptionsFor($query, $email)
     {
-        return $this->hasMany(SubscriptionAttendance::class);
+        $query->whereHas('attendances', function ($query) use ($email) {
+            $query->whereNotNull('out_time');
+        })->whereHas('user', function ($q) use ($email) {
+            $q->whereEmail($email);
+        })->whereNotNull('approved_at');
     }
-
-
 }

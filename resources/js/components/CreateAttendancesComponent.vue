@@ -99,7 +99,7 @@
         methods: {
             getDevices() {
                 if (this.state) {
-                    axios.get(`${this.userSubscriptions}${this.formData.email}/subscriptions?deleted=1`).then(({data}) => {
+                    axios.get(`${this.userSubscriptions}${this.formData.email}/subscriptions?attended=1`).then(({data}) => {
                         if (data.subscriptions.length) {
                             this.devices = data.subscriptions.map(device => {
                                 return device.item_name;
@@ -116,7 +116,7 @@
                             subscribedDevices.push(item.item_name);
                         });
 
-                        axios.get(`${this.userSubscriptions}${this.formData.email}/subscriptions?deleted=1`).then(({data}) => {
+                        axios.get(`${this.userSubscriptions}${this.formData.email}/subscriptions?attended=1`).then(({data}) => {
                             if (data.subscriptions.length) {
                                data.subscriptions.map(item => {
                                    attendedDevices.push(item.item_name);
