@@ -2,7 +2,7 @@
 
 @section('content')
     @can('create-department')
-        <daily-records-component></daily-records-component>
+        <daily-records-component :attendances="{{$attendances}}"></daily-records-component>
     @else
         <device-list-component :subscriptions="{{$subscriptions}}"></device-list-component>
     @endcan

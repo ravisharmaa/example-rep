@@ -61,14 +61,19 @@
                                 <a class="nav-link" href="{{route('items.subscriptions.index')}}">{{ __('View Subscriptions') }}</a>
                             </li>
                         @endauth()
+
                         @guest
-                            <li class="nav-item">
-                                <a class="nav-link login" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
+                            @if(!request()->is('attendances'))
                                 <li class="nav-item">
-                                    <a class="nav-link register" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link login" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
+                            @endif
+                            @if (Route::has('register'))
+                                @if(!request()->is('attendances'))
+                                    <li class="nav-item">
+                                        <a class="nav-link register" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    </li>
+                                @endif
                             @endif
                         @else
                             <li class="nav-item dropdown">

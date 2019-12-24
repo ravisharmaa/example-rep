@@ -25,14 +25,16 @@ class SubscriptionAttendancesController extends Controller
      */
     public function store()
     {
-        $subscription = Subscription::where('item_name', request('item_name'))->first();
+        $subscription = Subscription::whereIn('item_name', request('item_name'))->get();
 
         abort_if(is_null($subscription), 403, 'You are un-authorized complete this. Please ask for subscription');
 
-        $subscription->user->attendances()->create([
-            'subscription_id' => $subscription->id,
-            'in_time' => now(),
-        ]);
+        $subscription->each(function ($sub) {
+            $sub->user->attendances()->create([
+                'subscription_id' => $sub->id,
+                'out_time' => now(),
+            ]);
+        });
 
         return response('success', 200);
     }
@@ -42,18 +44,16 @@ class SubscriptionAttendancesController extends Controller
      */
     public function update()
     {
-        $subscription = Subscription::where('item_name', request('item_name'))->first();
-
-        abort_if(is_null($subscription), 403, 'You are un-authorized complete this.');
+//        $subscription = Subscription::whereIn('item_name', request('item_name'))->get();
+//
+//        abort_if(is_null($subscription), 403, 'You are un-authorized complete this.');
 
         SubscriptionAttendance::with(['user' => function ($query) {
             $query->where('email', request('email'))->first()
                 ->with(['subscriptions' => function ($query) {
-                    $query->where('item_name', request('item_name'))->first();
+                    $query->whereIn('item_name', request('item_name'))->get();
                 }]);
-        }])->latest()->first()->update([
-            'out_time' => now(),
-        ]);
+        }])->first()->delete();
 
         return response('success', 200);
     }

@@ -15,26 +15,12 @@ class CreateAttendanceTest extends TestCase
         'item_name' => [
             'Item 1',
             'Item 2',
-            'Item3',
+            'Item 3',
             ],
         'email' => 'random@user.com',
     ];
 
-    /**
-     * @test
-     */
 
-    public function guest_can_get_items_for_today()
-    {
-        $this->withoutExceptionHandling();
-
-        factory(Attendance::class)->create([
-            'in_time' => Carbon::today()->toDateTimeString()
-        ]);
-
-        $this->get(route('attendances.index'));
-
-    }
     /**
      * @test
      */
@@ -59,7 +45,6 @@ class CreateAttendanceTest extends TestCase
         $this->assertDatabaseHas('attendances', [
            'item_name' => $this->devicesReceivedFromApi['item_name'][0],
            'email' => $this->devicesReceivedFromApi['email'],
-           'in_time' => now(),
         ]);
     }
 
@@ -68,17 +53,19 @@ class CreateAttendanceTest extends TestCase
      */
     public function guest_can_check_out_with_the_devices_received_from_api()
     {
-        $this->withoutExceptionHandling();
+        $this->withExceptionHandling();
 
         $attendance = factory(Attendance::class)->create([
             'item_name' => 'Item 1',
-            'email' => 'random@user.com',
-            'in_time' => now(),
+            'email' => 'random@user.com'
         ]);
 
-        $this->patch(route('attendances.update'), $this->devicesReceivedFromApi);
+        $this->patch(route('attendances.update'), [
+            'item_name' => $this->devicesReceivedFromApi['item_name'],
+            'email' => $this->devicesReceivedFromApi['email']
+        ]);
 
-        $this->assertNotNull($attendance->fresh()->out_time);
+        $this->assertNotNull($attendance->fresh()->deleted_at);
     }
 
     /**
@@ -87,9 +74,9 @@ class CreateAttendanceTest extends TestCase
 
     public function guests_can_not_checkout_with_un_attended_devices()
     {
-        $this->withoutExceptionHandling();
+        $this->withExceptionHandling();
 
         $this->patch(route('attendances.update'), $this->devicesReceivedFromApi)
-        ->assertStatus(422);
+        ->assertStatus(404);
     }
 }

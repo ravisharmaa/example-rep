@@ -53,4 +53,4 @@ Route::patch('subscription/attendances', 'SubscriptionAttendancesController@upda
  */
 Route::get('attendances', 'AttendancesController@create')->name('attendances.create');
 Route::post('attendances', 'AttendancesController@store')->name('attendances.create');
-Route::patch('attendances', 'AttendancesController@update')->name('attendances.update');
+Route::patch('attendances', 'AttendancesController@delete')->name('attendances.update');

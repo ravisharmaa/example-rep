@@ -53,7 +53,7 @@
 </template>
 
 <script>
-    import {userSubscriptions, deviceAttendances, attendancesUrl, subscriptionAttendances} from '../utilities/constants';
+    import {devicesUrl, attendancesUrl, deviceAttendances} from '../utilities/constants';
     import swal from 'sweetalert';
     import Multiselect from 'vue-multiselect';
     import {ToggleButton} from 'vue-js-toggle-button';
@@ -68,10 +68,8 @@
                 devices: [],
                 error: false,
                 checkIn: true,
-                userSubscriptions: userSubscriptions,
-                deviceAttendances: deviceAttendances+ '/',
                 attendancesUrl: attendancesUrl,
-                subscriptionAttendances: subscriptionAttendances,
+                deviceAttendances: deviceAttendances+ '/',
                 state:false,
                 validEmail: false
             }
@@ -99,7 +97,7 @@
         methods: {
             getDevices() {
                 if (this.state) {
-                    axios.get(`${this.userSubscriptions}${this.formData.email}/subscriptions`).then((response) => {
+                    axios.get(`${this.deviceAttendances}${this.formData.email}`).then((response) => {
                         if (response.data.length) {
                             this.devices = response.data.map(data => {
                                 return data.item_name;
@@ -107,30 +105,25 @@
                         }
                     });
                 } else {
-                    let subscribedDevices = [];
-                    let attendedDevices = [];
-                    axios.get(`${this.userSubscriptions}${this.formData.email}/subscriptions`).then(({data}) => {
-                        //debugger;
-                        data.subscriptions.map(item => {
-                            subscribedDevices.push(item.item_name);
+                    let devicesFromApi = [];
+                    let localDevices = [];
+                    axios.get(`${devicesUrl}${this.formData.email}`).then(({data}) => {
+                        data.results.map(item => {
+                            devicesFromApi.push(item.item_name);
                         });
 
-
-
-                        axios.get(`${this.userSubscriptions}${this.formData.email}/subscriptions?deleted=1`).then((response) => {
-
-
-                            if (response.data.length) {
+                        axios.get(`${this.deviceAttendances}${this.formData.email}`).then((response) => {
+                           if (response.data.length) {
                                response.data.map(item => {
-                                   attendedDevices.push(item.item_name);
+                                   localDevices.push(item.item_name);
                                });
 
-                             this.devices = subscribedDevices.filter(value => {
-                                 return attendedDevices.indexOf(value) === -1;
+                             this.devices = devicesFromApi.filter(value => {
+                                 return localDevices.indexOf(value) === -1;
                               });
 
                            } else {
-                               this.devices = subscribedDevices;
+                               this.devices = devicesFromApi;
                            }
                         });
                     });
@@ -145,8 +138,7 @@
                     method = 'post';
                 }
 
-                axios[method](this.subscriptionAttendances, this.formData).then((response) => {
-
+                axios[method](this.attendancesUrl, this.formData).then((response) => {
                     if (response.status === 200) {
                         swal({
                             title: response.data,

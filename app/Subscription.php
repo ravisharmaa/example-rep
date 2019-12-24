@@ -72,5 +72,14 @@ class Subscription extends Model
         event(new SubscriptionInitiated($this));
     }
 
+    /**
+     *
+     */
+
+    public function attendances()
+    {
+        return $this->hasMany(SubscriptionAttendance::class);
+    }
+
 
 }

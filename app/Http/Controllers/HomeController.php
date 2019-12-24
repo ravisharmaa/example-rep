@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Attendance;
-use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -22,8 +21,13 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //$attendances = Attendance::withTrashed()->get();
+
         return view('home', [
             'subscriptions' => auth()->user()->subscriptions,
         ]);
+
+
+        //return view('home', compact('attendances'));
     }
 }

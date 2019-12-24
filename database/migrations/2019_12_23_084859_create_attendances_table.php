@@ -17,7 +17,7 @@ class CreateAttendancesTable extends Migration
             $table->bigIncrements('id');
             $table->string('email');
             $table->string('item_name');
-            $table->date('out_time')->nullable();
+            $table->date('in_time')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
