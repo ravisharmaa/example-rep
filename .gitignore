@@ -13,3 +13,4 @@ yarn-error.log
 tests-results/*
 .php_cs.cache
 .htaccess
+.htaccess.backup
