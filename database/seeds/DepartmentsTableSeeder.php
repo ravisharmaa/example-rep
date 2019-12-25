@@ -14,27 +14,51 @@ class DepartmentsTableSeeder extends Seeder
     {
         $departmentsAndHeads = [
           'IM' => [
-              'user' => 'Javra Software',
-              'email' => 'infra@javra.com',
+              'user' => 'Javra IM',
+              'email' => 'satya.maharjan@javra.com',
           ],
           'JWNM' => [
               'user' => 'Javra Web',
               'email' => 'ravindra.fauzdar@javra.com',
           ],
+
+          'Operation' => [
+              'user' => 'Javra Operation',
+              'email' => 'manoj.giri@javra.com'
+          ],
+
+            'Java' => [
+                'user' => 'Javra Java',
+                'email' => 'jayraj.bhatta@javra.com'
+            ],
+
+            'QA' => [
+                'user' => 'Javra QA',
+                'email' => 'devnarayan.pandey@javra.com'
+            ],
+
+            '.NET' => [
+                'user' => 'Javra .NET',
+                'email' => 'dibyamani.suvedi@javra.com'
+            ],
+
+            'R&D' => [
+                'user' => 'Javra R&D',
+                'email' => 'thaman.singh.thapa@javra.com'
+            ],
+
+            'Managers' => [
+                'user' => 'Managers',
+                'email' => 'devnarayan.pandey@javra.com'
+            ],
+
+
         ];
 
         foreach ($departmentsAndHeads as $departmentName => $departmentInfo) {
             $department = \App\Department::create([
                'name' => $departmentName,
                'head' => $departmentInfo['email'],
-            ]);
-
-            User::create([
-               'name' => $departmentInfo['user'],
-               'email' => $departmentInfo['email'],
-               'department_id' => $department->id,
-               'email_verified_at' => now(),
-               'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             ]);
         }
     }
