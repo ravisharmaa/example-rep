@@ -34,7 +34,7 @@
                             <td>{{result.assignee}}</td>
                             <td>{{result.status | format }}</td>
                             <td>
-                                <a class="btn btnPrimary"
+                                <a class="btn btnSecondary"
                                    :class="result.isSubscribed ? 'btn-success disabled' : 'btn-primary'"
                                    @click.prevent="subscribe(result)"
                                    v-text="result.isSubscribed ? 'Subscribed' : 'Request'"></a>
@@ -85,12 +85,21 @@
         async mounted() {
             let subscribedDevices = [];
             this.subscriptions.map((subscription) => {
-                subscribedDevices.push(subscription.item_id);
+                subscribedDevices.push({
+                    "item_id": subscription.item_id,
+                    "subscription_code": subscription.subscription_code
+                });
             });
 
             await axios.get(`${devicesUrl}${user.email()}`).then(({data}) => {
                 data.results.map((device) => {
                     device['isSubscribed'] = false;
+
+                    var deviceOfInterest = subscribedDevices.filter(function (subscribedDevice) {
+                        return subscribedDevice['item_id'] == device['item_id'];
+                    })[0];
+
+                    device['subscription_code'] = deviceOfInterest['subscription_code'];
                     if (subscribedDevices.indexOf(device.item_id) !== -1) {
                         device['isSubscribed'] = true;
                     }
@@ -124,6 +133,10 @@
                 }).catch(error => {
                     console.log(error)
                 })
+            },
+
+            async return(result) {
+
             }
         }
     }
