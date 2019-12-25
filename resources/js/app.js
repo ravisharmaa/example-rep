@@ -5,7 +5,8 @@
  */
 
 require('./bootstrap');
-require('./utilities/auth')
+require('./utilities/auth');
+require('./utilities/constants');
 
 
 window.Vue = require('vue');

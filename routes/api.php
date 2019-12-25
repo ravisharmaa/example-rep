@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('attendances/{email}', 'AttendancesController@index')->name('attendances.index');
 Route::get('user/{email}/subscriptions', 'Api\\UserSubscriptionsController@index')->name('user.subscriptions.index');
+Route::get('daily-records', 'Api\\SubscriptionAttendancesController@index')->name('daily-records.index');

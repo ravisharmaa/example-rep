@@ -9,5 +9,7 @@ class RejectedSubscriptionsController extends Controller
     public function update(Subscription $subscription)
     {
         $subscription->reject()->inform();
+
+        return view('subscriptions.rejected');
     }
 }

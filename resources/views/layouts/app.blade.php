@@ -21,7 +21,8 @@
     <script>
         Window.app = {!! json_encode([
             'user'=> auth()->user(),
-            'isLoggedIn' => auth()->check()
+            'isLoggedIn' => auth()->check(),
+            'appUrl' => url('/')
         ])!!};
     </script>
 </head>

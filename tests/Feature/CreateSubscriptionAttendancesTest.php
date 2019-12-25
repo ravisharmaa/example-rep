@@ -27,24 +27,28 @@ class CreateSubscriptionAttendancesTest extends TestCase
     /**
      * @test
      */
-    public function guests_can_check_in_with_subscription()
+    public function guests_can_check_in_with_his_subscription()
     {
         $this->withoutExceptionHandling();
 
-        $subscription = factory(Subscription::class)->create();
+        $user = factory(User::class)->create();
+
+        $subscription = factory(Subscription::class)->create([
+            'user_id' => $user->id,
+        ]);
 
         $this->post(route('subscriptions.attendances.create'), [
-            'item_name' => $subscription->item_name,
-            'email' => $subscription->user->email,
+            'item_name' => [$subscription->item_name],
+            'email' => $user->email,
         ]);
 
         $this->assertDatabaseHas('subscription_attendances', [
            'subscription_id' => $subscription->id,
-           'user_id' => $subscription->user->id,
-           'in_time' => now(),
+           'user_id' => $user->id,
+           'out_time' => now(),
         ]);
 
-        $this->assertNotNull($subscription->user->attendances->first->in_time);
+        $this->assertNotNull($subscription->user->attendances->first->out_time);
     }
 
     /**
@@ -56,10 +60,10 @@ class CreateSubscriptionAttendancesTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $subscription = factory(Subscription::class)->make();
+        $subscription = factory(Subscription::class)->create();
 
         $this->post(route('subscriptions.attendances.create'), [
-           'item_name' => $subscription->item_name,
+           'item_name' => [$subscription->item_name],
            'email' => $user->email,
         ])->assertStatus(403);
     }
@@ -69,25 +73,42 @@ class CreateSubscriptionAttendancesTest extends TestCase
      */
     public function guest_can_check_out_with_subscription()
     {
-        $this->withExceptionHandling();
+        $this->withOutExceptionHandling();
 
         $subscriptionOfMobile = factory(Subscription::class)->create();
-
-        $subscriptionOfLaptop = factory(Subscription::class)->create();
 
         factory(SubscriptionAttendance::class)->create([
             'user_id' => $subscriptionOfMobile->user->id,
             'subscription_id' => $subscriptionOfMobile->id,
-            'in_time' => now(),
+            'out_time' => now(),
         ]);
 
         $this->patch(route('subscriptions.attendances.update'), [
-           'item_name' => $subscriptionOfMobile->item_name,
+           'item_name' => [$subscriptionOfMobile->item_name],
            'email' => $subscriptionOfMobile->user->email,
         ]);
 
-        $this->assertNotNull($subscriptionOfMobile->user->attendances->fresh()->first->out_time);
+        $this->assertSoftDeleted('subscription_attendances', [
+            'subscription_id' => $subscriptionOfMobile->id,
+            'user_id' => $subscriptionOfMobile->user->id,
+        ]);
+    }
 
-        $this->assertNull($subscriptionOfLaptop->user->attendances->fresh()->first->out_time);
+
+    /**
+     * @test
+     */
+    public function guests_can_not_check_out_with_un_subscribed_devices()
+    {
+        $this->withExceptionHandling();
+
+        $user = factory(User::class)->create();
+
+        $subscription = factory(Subscription::class)->create();
+
+        $this->post(route('subscriptions.attendances.update'), [
+            'item_name' => [$subscription->item_name],
+            'email' => $user->email,
+        ])->assertStatus(403);
     }
 }

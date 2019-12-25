@@ -47,6 +47,8 @@ class SubscriptionsController extends Controller
     public function update(Subscription $subscription)
     {
         $subscription->approve()->inform();
+
+        return view('subscriptions.approved');
     }
 
     /**

@@ -66,7 +66,7 @@ class ViewSubscriptionsTest extends TestCase
         $user = factory(User::class)->create();
 
         factory(Subscription::class, 2)->create([
-            'user_id' => $user->id,
+             'user_id' => $user->id,
              'approved_at' => now()
         ]);
 
