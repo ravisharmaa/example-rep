@@ -104,9 +104,9 @@ class Subscription extends Model
      */
     public function scopeApprovedSubscriptionsFor($query, $email)
     {
-        return $query->with(['user' => function ($query) use ($email) {
-            return $query->where('email', $email);
-        }])->whereNotNull('approved_at');
+        return $query->whereHas('user', function($query) use ($email) {
+            $query->whereEmail($email);
+        })->whereNotNull('approved_at');
     }
 
     /*
@@ -117,7 +117,7 @@ class Subscription extends Model
 
     public function scopeAttendedSubscriptionsFor($query, $email)
     {
-        $query->whereHas('attendances', function ($query) use ($email) {
+        return $query->whereHas('attendances', function ($query) use ($email) {
             $query->whereNotNull('out_time');
         })->whereHas('user', function ($q) use ($email) {
             $q->whereEmail($email);
