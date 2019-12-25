@@ -12,3 +12,4 @@ npm-debug.log
 yarn-error.log
 tests-results/*
 .php_cs.cache
+.htaccess
