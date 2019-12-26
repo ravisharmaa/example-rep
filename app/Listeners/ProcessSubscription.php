@@ -16,6 +16,6 @@ class ProcessSubscription
      */
     public function handle($event)
     {
-        Mail::to(auth()->user()->department->head)->queue(new SubscriptionPrepared($event->subscription));
+        Mail::to(auth()->user()->department->head)->send(new SubscriptionPrepared($event->subscription));
     }
 }

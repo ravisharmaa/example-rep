@@ -136,6 +136,8 @@
                 }).catch(error => {
                     console.log(error)
                 })
+
+                this.$forceUpdate()
             },
 
             async return(result) {

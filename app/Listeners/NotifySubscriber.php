@@ -14,6 +14,6 @@ class NotifySubscriber
      */
     public function handle($event)
     {
-        Mail::to('john@example.com')->queue(new SubscriptionApproved($event->device, $event->approvedBy));
+        Mail::to('john@example.com')->send(new SubscriptionApproved($event->device, $event->approvedBy));
     }
 }
