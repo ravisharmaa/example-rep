@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Attendance;
-use Illuminate\Auth\Access\Gate;
+use Illuminate\Support\Facades\Gate;
 
 class HomeController extends Controller
 {
@@ -22,9 +21,14 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $subscriptions = null;
+
+        if (Gate::allows('can-create-departments')) {
+            $subscriptions = auth()->user()->subscriptions;
+        }
 
         return view('home', [
-            'subscriptions' => auth()->user()->subscriptions,
+            'subscriptions' => $subscriptions,
         ]);
     }
 }
