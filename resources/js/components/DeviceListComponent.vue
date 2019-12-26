@@ -95,11 +95,11 @@
                 data.results.map((device) => {
                     device['isSubscribed'] = false;
 
-                    var deviceOfInterest = subscribedDevices.filter(function (subscribedDevice) {
+                  /*  var deviceOfInterest = subscribedDevices.filter(function (subscribedDevice) {
                         return subscribedDevice['item_id'] == device['item_id'];
                     })[0];
-
-                    device['subscription_code'] = deviceOfInterest['subscription_code'];
+*/
+                    //device['subscription_code'] = deviceOfInterest['subscription_code'];
                     if (subscribedDevices.indexOf(device.item_id) !== -1) {
                         device['isSubscribed'] = true;
                     }

@@ -559,9 +559,16 @@ align-items: center;
     bottom:-10px;
 }
 .subscription .loginDiv .card-header {
-    color: #fff;
-    background: #0b3bca;
-    font-size: 20px;
+    color: #333;
+    font-weight: 700;
+    background: transparent;
+    font-size: 30px;
+    border-bottom:none;
+}
+.subscription .card.loginDiv  {
+
+    background: transparent;
+
 }
 .subscription .loginDiv form .btn {
     width: auto;
@@ -574,15 +581,34 @@ align-items: center;
 
     border: none;
 }
-.subscription .loginDiv form .btn.btn-primary {
-    background: #0b3bca;
-    margin-left: 104px;
+.subscription .loginDiv form .btnGroup {
+    display: flex;
+    justify-content: center;
 }
-.subscription .loginDiv form .btn.btn-danger {
-    background: #dc3230;
-}
+
 .align-middle {
     height: calc(100vh - 140px);
     -webkit-box-align: center;
     align-items: center;
+}
+.multiselect__input
+{
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+.multiselect__tags {
+
+    padding: 10px !important;
+
+    min-height: 25px !important;
+}
+.multiselect
+{
+    min-height:25px !important;
+
+}
+.multiselect__placeholder {
+
+    padding-top: 12px;
+    margin-left: 10px;
 }

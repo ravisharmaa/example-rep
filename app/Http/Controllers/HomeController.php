@@ -21,11 +21,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $subscriptions = null;
+        //$subscriptions = null;
 
-        if (Gate::allows('can-create-departments')) {
+        //if (Gate::allows('can-create-departments')) {
             $subscriptions = auth()->user()->subscriptions;
-        }
+        //}
 
         return view('home', [
             'subscriptions' => $subscriptions,

@@ -2231,10 +2231,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 var data = _ref.data;
                 data.results.map(function (device) {
                   device['isSubscribed'] = false;
-                  var deviceOfInterest = subscribedDevices.filter(function (subscribedDevice) {
-                    return subscribedDevice['item_id'] == device['item_id'];
-                  })[0];
-                  device['subscription_code'] = deviceOfInterest['subscription_code'];
+                  /*  var deviceOfInterest = subscribedDevices.filter(function (subscribedDevice) {
+                        return subscribedDevice['item_id'] == device['item_id'];
+                    })[0];
+                  */
+                  //device['subscription_code'] = deviceOfInterest['subscription_code'];
 
                   if (subscribedDevices.indexOf(device.item_id) !== -1) {
                     device['isSubscribed'] = true;
@@ -57148,7 +57149,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row" }, [
+    return _c("div", { staticClass: "form-group btnGroup row" }, [
       _c("button", { staticClass: "btn btn-primary justify-" }, [
         _vm._v("Submit")
       ])

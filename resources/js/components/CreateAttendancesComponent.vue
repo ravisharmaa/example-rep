@@ -40,7 +40,7 @@
 
                             </div>
 
-                            <div class="form-group row">
+                            <div class="form-group btnGroup row">
                                 <button class="btn btn-primary justify-">Submit</button>
                             </div>
                         </form>
