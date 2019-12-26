@@ -36,7 +36,7 @@ class SubscriptionsController extends Controller
         // announce the notification
         auth()->user()->subscribe()->announce();
 
-        return back();
+        return response('Your request has been queued for mail, Thanks for the patience', 200);
     }
 
     /**

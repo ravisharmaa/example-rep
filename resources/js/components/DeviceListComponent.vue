@@ -39,10 +39,8 @@
                                    @click.prevent="subscribe(result)"
                                    v-text="result.isSubscribed ? 'Subscribed' : 'Request'"></a>
 
-                                <a class="btn btnSecondary"
-                                   :class="result.isSubscribed ? 'btn-success disabled' : 'btn-primary'" href=""
-                                   @click.prevent="subscribe(result)"
-                                   v-text="result.isSubscribed ? 'Subscribed' : 'Return'"></a>
+                                <a v-if="result.isSubscribed" class="btn btnSecondary"
+                                   @click.prevent="subscribe(result)">Return</a>
                             </td>
                         </tr>
                         </tbody>
@@ -59,6 +57,7 @@
     import {user} from "../utilities/auth";
     import moment from 'moment'
     import {devicesUrl, subscriptionsUrl, subscriptionsRemoteUrl} from "../utilities/constants";
+    import swal from 'sweetalert'
 
     export default {
         props: ['subscriptions'],
@@ -85,21 +84,15 @@
         async mounted() {
             let subscribedDevices = [];
             this.subscriptions.map((subscription) => {
-                subscribedDevices.push({
-                    "item_id": subscription.item_id,
-                    "subscription_code": subscription.subscription_code
-                });
+                subscribedDevices.push(
+                    subscription.item_id
+                );
             });
 
             await axios.get(`${devicesUrl}${user.email()}`).then(({data}) => {
                 data.results.map((device) => {
                     device['isSubscribed'] = false;
 
-                  /*  var deviceOfInterest = subscribedDevices.filter(function (subscribedDevice) {
-                        return subscribedDevice['item_id'] == device['item_id'];
-                    })[0];
-*/
-                    //device['subscription_code'] = deviceOfInterest['subscription_code'];
                     if (subscribedDevices.indexOf(device.item_id) !== -1) {
                         device['isSubscribed'] = true;
                     }
@@ -123,13 +116,23 @@
 
         methods: {
             async subscribe(result) {
+                swal({
+                    title: 'Your request has been submitted for review.',
+                    icon:"success"
+                });
                 result.isSubscribed = true;
                 await axios.post(`${subscriptionsUrl}`, {
                     'item_id': result.item_id,
                     'item_name': result.item_name
-                }).then(({data}) => {
-                    console.log(data)
+                }).then((response) => {
+                    console.log(response);
 
+                    if (response.status === 500) {
+                        swal({
+                            title: response.data,
+                            icon:"error"
+                        });
+                    }
                 }).catch(error => {
                     console.log(error)
                 })

@@ -14,6 +14,6 @@ class SendNotificationEmail
      */
     public function handle($event)
     {
-        Mail::to('john@example.com')->send(new RequestForwarded($event->deviceSubscription));
+        Mail::to('john@example.com')->queue(new RequestForwarded($event->deviceSubscription));
     }
 }

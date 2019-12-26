@@ -17,6 +17,6 @@ class InformConcerned
      */
     public function handle($event)
     {
-        Mail::to($event->subscription->user->email)->send(new SubscriptionCompleted($event->subscription));
+        Mail::to($event->subscription->user->email)->queue(new SubscriptionCompleted($event->subscription));
     }
 }
