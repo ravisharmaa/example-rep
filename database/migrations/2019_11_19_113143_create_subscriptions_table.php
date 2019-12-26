@@ -17,7 +17,7 @@ class CreateSubscriptionsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('item_id');
-            $table->unsignedInteger('item_name');
+            $table->string('item_name');
             $table->text('subscription_code')->nullable();
             $table->string('approved_by')->nullable();
             $table->timestamp('approved_at')->nullable();
