@@ -2222,7 +2222,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             case 0:
               subscribedDevices = [];
               this.subscriptions.map(function (subscription) {
-                subscribedDevices.push(subscription.item_id);
+                subscribedDevices.push(parseInt(subscription.item_id));
               });
               _context.next = 4;
               return axios.get("".concat(_utilities_constants__WEBPACK_IMPORTED_MODULE_3__["devicesUrl"]).concat(_utilities_auth__WEBPACK_IMPORTED_MODULE_1__["user"].email())).then(function (_ref) {
@@ -2230,7 +2230,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 data.results.map(function (device) {
                   device['isSubscribed'] = false;
 
-                  if (subscribedDevices.indexOf(device.item_id) !== -1) {
+                  if (subscribedDevices.indexOf(parseInt(device.item_id)) !== -1) {
                     device['isSubscribed'] = true;
                   }
                 });

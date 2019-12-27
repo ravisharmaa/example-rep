@@ -85,14 +85,14 @@
             let subscribedDevices = [];
             this.subscriptions.map((subscription) => {
                 subscribedDevices.push(
-                    subscription.item_id
+                    parseInt(subscription.item_id)
                 );
             });
 
             await axios.get(`${devicesUrl}${user.email()}`).then(({data}) => {
                 data.results.map((device) => {
                     device['isSubscribed'] = false;
-                    if (subscribedDevices.indexOf(device.item_id) !== -1) {
+                    if (subscribedDevices.indexOf(parseInt(device.item_id)) !== -1) {
                         device['isSubscribed'] = true;
                     }
                 });
