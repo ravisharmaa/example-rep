@@ -92,7 +92,6 @@
             await axios.get(`${devicesUrl}${user.email()}`).then(({data}) => {
                 data.results.map((device) => {
                     device['isSubscribed'] = false;
-
                     if (subscribedDevices.indexOf(device.item_id) !== -1) {
                         device['isSubscribed'] = true;
                     }
@@ -135,7 +134,7 @@
                     }
                 }).catch(error => {
                     console.log(error)
-                })
+                });
 
                 this.$forceUpdate()
             },
