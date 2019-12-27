@@ -6,6 +6,7 @@ use App\Subscription;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\View\View;
 
 class SubscriptionsController extends Controller
 {
@@ -44,22 +45,24 @@ class SubscriptionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @return void
+     * @return View
      */
     public function update(Subscription $subscription)
     {
+        if ($subscription->approved_at) {
+            abort(403, 'You have already approved the device');
+        }
+
         $subscription->approve()->inform();
 
         return view('subscriptions.approved');
     }
 
     /**
-     * @param Subscription $subscription
      * @return ResponseFactory|Response
      */
     public function destroy(Subscription $subscription)
     {
-
         if ($subscription->returned_at) {
             return \response('You have already returned the device', 200);
         }

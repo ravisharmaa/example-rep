@@ -120,6 +120,25 @@ class SubscribeExternalItemsTest extends TestCase
     /**
      * @test
      */
+    public function guests_can_not_complete_the_subscription_twice()
+    {
+        $department = factory(Department::class)->make();
+
+        $this->withExceptionHandling();
+
+        $subscription = factory(Subscription::class)->create([
+            'subscription_code' => Str::uuid(),
+            'approved_at' => now(),
+            'approved_by' => $department->head
+        ]);
+
+        $this->get(route('items.subscriptions.update', [$subscription]))
+            ->assertStatus(403);
+    }
+
+    /**
+     * @test
+     */
     public function it_dispatches_event_on_approval()
     {
         $this->withoutExceptionHandling();
@@ -259,7 +278,7 @@ class SubscribeExternalItemsTest extends TestCase
         ]);
 
         $this->actingAs($user)->post(route('items.subscriptions.destroy', [$subscription]))
-            ->assertStatus(422);
+            ->assertStatus(200);
     }
 
 
