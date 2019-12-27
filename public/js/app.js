@@ -2198,7 +2198,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       results: [],
       curate: '',
-      name: _utilities_auth__WEBPACK_IMPORTED_MODULE_1__["user"].name()
+      name: _utilities_auth__WEBPACK_IMPORTED_MODULE_1__["user"].name(),
+      revokingUrl: _utilities_constants__WEBPACK_IMPORTED_MODULE_3__["revokingUrl"]
     };
   },
   filters: {
@@ -2213,33 +2214,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var _mounted = _asyncToGenerator(
     /*#__PURE__*/
     _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var _this = this;
-
-      var subscribedDevices;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              subscribedDevices = [];
-              this.subscriptions.map(function (subscription) {
-                subscribedDevices.push(parseInt(subscription.item_id));
-              });
-              _context.next = 4;
-              return axios.get("".concat(_utilities_constants__WEBPACK_IMPORTED_MODULE_3__["devicesUrl"]).concat(_utilities_auth__WEBPACK_IMPORTED_MODULE_1__["user"].email())).then(function (_ref) {
-                var data = _ref.data;
-                data.results.map(function (device) {
-                  device['isSubscribed'] = false;
+              this.getData();
 
-                  if (subscribedDevices.indexOf(parseInt(device.item_id)) !== -1) {
-                    device['isSubscribed'] = true;
-                  }
-                });
-                _this.results = data.results;
-              })["catch"](function (error) {
-                console.log('Error');
-              });
-
-            case 4:
+            case 1:
             case "end":
               return _context.stop();
           }
@@ -2255,10 +2236,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   }(),
   computed: {
     curated: function curated() {
-      var _this2 = this;
+      var _this = this;
 
       return this.results.filter(function (result) {
-        return result.item_name.toLowerCase().indexOf(_this2.curate.toLowerCase()) >= 0;
+        return result.item_name.toLowerCase().indexOf(_this.curate.toLowerCase()) >= 0;
       });
     }
   },
@@ -2281,8 +2262,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   'item_id': result.item_id,
                   'item_name': result.item_name
                 }).then(function (response) {
-                  console.log(response);
-
                   if (response.status === 500) {
                     sweetalert__WEBPACK_IMPORTED_MODULE_4___default()({
                       title: response.data,
@@ -2294,14 +2273,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 4:
-                this.$forceUpdate();
-
-              case 5:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee2);
       }));
 
       function subscribe(_x) {
@@ -2310,27 +2286,61 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return subscribe;
     }(),
-    "return": function () {
-      var _return2 = _asyncToGenerator(
+    revoke: function () {
+      var _revoke = _asyncToGenerator(
       /*#__PURE__*/
       _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3(result) {
+        var deviceIntendedToReturn;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                deviceIntendedToReturn = this.subscriptions.find(function (subscription) {
+                  return parseInt(result.item_id) === parseInt(subscription.item_id);
+                });
+                axios.post("".concat(this.revokingUrl).concat(deviceIntendedToReturn.subscription_code, "/delete")).then(function (response) {
+                  if (response.status === 200) {
+                    sweetalert__WEBPACK_IMPORTED_MODULE_4___default()({
+                      title: response.data,
+                      icon: 'success'
+                    });
+                  }
+                })["catch"](function (error) {
+                  console.log(error);
+                });
+                result.isSubscribed = false;
+
+              case 3:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3);
+        }, _callee3, this);
       }));
 
-      function _return(_x2) {
-        return _return2.apply(this, arguments);
+      function revoke(_x2) {
+        return _revoke.apply(this, arguments);
       }
 
-      return _return;
-    }()
+      return revoke;
+    }(),
+    getData: function getData() {
+      var _this2 = this;
+
+      var subscribedDevices = [];
+      this.subscriptions.map(function (subscription) {
+        subscribedDevices.push(parseInt(subscription.item_id));
+      });
+      axios.get("".concat(_utilities_constants__WEBPACK_IMPORTED_MODULE_3__["devicesUrl"]).concat(_utilities_auth__WEBPACK_IMPORTED_MODULE_1__["user"].email())).then(function (_ref) {
+        var data = _ref.data;
+        data.results.map(function (device) {
+          device['isSubscribed'] = subscribedDevices.indexOf(parseInt(device.item_id)) !== -1;
+        });
+        _this2.results = data.results;
+      })["catch"](function (error) {
+        console.log('Error');
+      });
+    }
   }
 });
 
@@ -57356,7 +57366,7 @@ var render = function() {
                             on: {
                               click: function($event) {
                                 $event.preventDefault()
-                                return _vm.subscribe(result)
+                                return _vm.revoke(result)
                               }
                             }
                           },
@@ -70086,13 +70096,15 @@ var attendancesUrl = '/attendances';
 var userSubscriptions = '/api/user/';
 var subscriptionAttendances = '/subscription/attendances/';
 var dailyRecords = '/api/daily-records';
+var revokingUrl = '/subscriptions/';
 module.exports = {
   devicesUrl: devicesUrl,
   subscriptionsUrl: subscriptionsUrl,
   attendancesUrl: attendancesUrl,
   userSubscriptions: userSubscriptions,
   subscriptionAttendances: subscriptionAttendances,
-  dailyRecords: dailyRecords
+  dailyRecords: dailyRecords,
+  revokingUrl: revokingUrl
 };
 
 /***/ }),

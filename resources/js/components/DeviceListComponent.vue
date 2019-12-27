@@ -40,7 +40,7 @@
                                    v-text="result.isSubscribed ? 'Subscribed' : 'Request'"></a>
 
                                 <a v-if="result.isSubscribed" class="btn btnSecondary"
-                                   @click.prevent="subscribe(result)">Return</a>
+                                   @click.prevent="revoke(result)">Return</a>
                             </td>
                         </tr>
                         </tbody>
@@ -56,7 +56,7 @@
 
     import {user} from "../utilities/auth";
     import moment from 'moment'
-    import {devicesUrl, subscriptionsUrl, subscriptionsRemoteUrl} from "../utilities/constants";
+    import {devicesUrl, subscriptionsUrl, revokingUrl} from "../utilities/constants";
     import swal from 'sweetalert'
 
     export default {
@@ -66,7 +66,8 @@
             return {
                 results: [],
                 curate: '',
-                name: user.name()
+                name: user.name(),
+                revokingUrl: revokingUrl
             }
         },
 
@@ -82,27 +83,7 @@
         },
 
         async mounted() {
-            let subscribedDevices = [];
-            this.subscriptions.map((subscription) => {
-                subscribedDevices.push(
-                    parseInt(subscription.item_id)
-                );
-            });
-
-            await axios.get(`${devicesUrl}${user.email()}`).then(({data}) => {
-                data.results.map((device) => {
-                    device['isSubscribed'] = false;
-                    if (subscribedDevices.indexOf(parseInt(device.item_id)) !== -1) {
-                        device['isSubscribed'] = true;
-                    }
-                });
-
-                this.results = data.results;
-
-
-            }).catch(error => {
-                console.log('Error')
-            });
+            this.getData();
         },
 
         computed: {
@@ -124,8 +105,6 @@
                     'item_id': result.item_id,
                     'item_name': result.item_name
                 }).then((response) => {
-                    console.log(response);
-
                     if (response.status === 500) {
                         swal({
                             title: response.data,
@@ -136,11 +115,48 @@
                     console.log(error)
                 });
 
-                this.$forceUpdate()
             },
 
-            async return(result) {
+            async revoke(result) {
 
+                let deviceIntendedToReturn = this.subscriptions.find(subscription => {
+                       return parseInt(result.item_id) === parseInt(subscription.item_id);
+                });
+
+               axios.post(`${this.revokingUrl}${deviceIntendedToReturn.subscription_code}/delete`)
+                .then(response => {
+                    if (response.status === 200) {
+                        swal({
+                            title: response.data,
+                            icon:'success'
+                        });
+                    }
+                }).catch(error => {
+                   console.log(error)
+               });
+
+               result.isSubscribed = false;
+            },
+
+            getData() {
+                let subscribedDevices = [];
+                this.subscriptions.map((subscription) => {
+                    subscribedDevices.push(
+                        parseInt(subscription.item_id)
+                    );
+                });
+
+                 axios.get(`${devicesUrl}${user.email()}`).then(({data}) => {
+                    data.results.map((device) => {
+                        device['isSubscribed'] = subscribedDevices.indexOf(parseInt(device.item_id)) !== -1;
+                    });
+
+                    this.results = data.results;
+
+
+                }).catch(error => {
+                    console.log('Error')
+                });
             }
         }
     }

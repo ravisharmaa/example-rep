@@ -244,6 +244,28 @@ class SubscribeExternalItemsTest extends TestCase
     /**
      * @test
      */
+    public function user_can_not_return_same_item_twice()
+    {
+        $this->withExceptionHandling();
+
+        $user = factory(User::class)->create();
+
+        $subscription = factory(Subscription::class)->create([
+            'user_id' => $user->id,
+            'subscription_code' => Str::uuid(),
+            'requested_at' => now(),
+            'approved_at' => now(),
+            'returned_at' => now()
+        ]);
+
+        $this->actingAs($user)->post(route('items.subscriptions.destroy', [$subscription]))
+            ->assertStatus(422);
+    }
+
+
+    /**
+     * @test
+     */
     public function it_dispatches_event_when_an_item_is_returned()
     {
         Event::fake();

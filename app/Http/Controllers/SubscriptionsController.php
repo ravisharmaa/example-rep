@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Subscription;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 
 class SubscriptionsController extends Controller
@@ -52,14 +54,18 @@ class SubscriptionsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @return void
+     * @param Subscription $subscription
+     * @return ResponseFactory|Response
      */
     public function destroy(Subscription $subscription)
     {
+
+        if ($subscription->returned_at) {
+            return \response('You have already returned the device', 200);
+        }
+
         $subscription->revoke()->announce();
 
-        return;
+        return response('You have successfully returned the device', 200);
     }
 }
