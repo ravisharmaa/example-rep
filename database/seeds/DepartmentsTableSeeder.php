@@ -15,7 +15,7 @@ class DepartmentsTableSeeder extends Seeder
         $departmentsAndHeads = [
           'IM' => [
               'user' => 'Javra IM',
-              'email' => 'ravi.sharma@javra.com',
+              'email' => 'satya.maharjan@javra.com',
           ],
           'JWNM' => [
               'user' => 'Javra Web',
