@@ -66,5 +66,33 @@ class DepartmentsTableSeeder extends Seeder
            'password' => bcrypt('javra123$'),
            'name' => 'Infra Javra',
         ]);
+
+        User::create([
+            'email' => 'puran.shrestha@javra.com',
+            'department_id' => '1',
+            'password' => bcrypt('javra123$'),
+            'name' => 'Puran Shrestha',
+        ]);
+
+        User::create([
+            'email' => 'satya.maharjan@javra.com',
+            'department_id' => '1',
+            'password' => bcrypt('javra123$'),
+            'name' => 'Satya Maharjan',
+        ]);
+
+        User::create([
+            'email' => 'manoj.shrestha@javra.com',
+            'department_id' => '1',
+            'password' => bcrypt('javra123$'),
+            'name' => 'Manoj Shrestha',
+        ]);
+
+        User::create([
+            'email' => 'pratap.kurumphang@javra.com',
+            'department_id' => '1',
+            'password' => bcrypt('javra123$'),
+            'name' => 'Pratap Kurumphang',
+        ]);
     }
 }
