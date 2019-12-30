@@ -34,13 +34,13 @@
                             <td>{{result.assignee}}</td>
                             <td>{{result.status | format }}</td>
                             <td>
-                                <a class="btn btnSecondary"
+                                <a v-if="result.isSubscribed" class="btn btnSecondary"
+                                   @click.prevent="revoke(result)">Return</a>
+
+                                <a class="btn btnPrimary"
                                    :class="result.isSubscribed ? 'btn-success disabled' : 'btn-primary'"
                                    @click.prevent="subscribe(result)"
                                    v-text="result.isSubscribed ? 'Subscribed' : 'Request'"></a>
-
-                                <a v-if="result.isSubscribed" class="btn btnSecondary"
-                                   @click.prevent="revoke(result)">Return</a>
                             </td>
                         </tr>
                         </tbody>
