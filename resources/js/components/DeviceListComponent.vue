@@ -123,19 +123,29 @@
                        return parseInt(result.item_id) === parseInt(subscription.item_id);
                 });
 
-               axios.post(`${this.revokingUrl}${deviceIntendedToReturn.subscription_code}/delete`)
-                .then(response => {
-                    if (response.status === 200) {
-                        swal({
-                            title: response.data,
-                            icon:'success'
-                        });
-                    }
-                }).catch(error => {
-                   console.log(error)
-               });
+                if (deviceIntendedToReturn === undefined) {
+                    swal({
+                        title: "You need to reload the page to return the device after asking for subscription",
+                        icon:'error'
+                    });
+                } else {
+                    axios.post(`${this.revokingUrl}${deviceIntendedToReturn.subscription_code}/delete`)
+                        .then(response => {
+                            if (response.status === 200) {
+                                swal({
+                                    title: response.data,
+                                    icon:'success'
+                                });
+                            }
+                        }).catch(error => {
+                        console.log(error)
+                    });
+                    result.isSubscribed = false;
+                }
 
-               result.isSubscribed = false;
+
+
+
             },
 
             getData() {
@@ -145,7 +155,6 @@
                         parseInt(subscription.item_id)
                     );
                 });
-
                  axios.get(`${devicesUrl}${user.email()}`).then(({data}) => {
                     data.results.map((device) => {
                         device['isSubscribed'] = subscribedDevices.indexOf(parseInt(device.item_id)) !== -1;
