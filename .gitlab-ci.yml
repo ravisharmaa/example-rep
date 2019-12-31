@@ -7,8 +7,7 @@ image: edbizarro/gitlab-ci-pipeline-php:7.3-alpine
 composer:
   stage: preparation
   script:
-    php -v 
     sudo apt get install php7.3
-    php -v 
+    php -v
 
 
