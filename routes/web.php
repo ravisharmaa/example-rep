@@ -49,7 +49,7 @@ Route::post('subscription/attendances', 'SubscriptionAttendancesController@store
 Route::patch('subscription/attendances', 'SubscriptionAttendancesController@update')->name('subscriptions.attendances.update');
 
 /*
- *Daily Attendances
+ * Daily Attendances
  */
 Route::get('attendances', 'AttendancesController@create')->name('attendances.create');
 Route::post('attendances', 'AttendancesController@store')->name('attendances.create');
